@@ -1,10 +1,11 @@
 package logger
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"os"
+
+	"github.com/VoltealProductions/Athenaeum/internal/utilities/fmtrs"
 )
 
 func fileLogger() *os.File {
@@ -16,18 +17,6 @@ func fileLogger() *os.File {
 	return logFile
 }
 
-func fmtString(str, t string, code any) string {
-	fmtStr := ""
-
-	if code != 0 {
-		fmtStr = fmt.Sprintf("| Code %s-%v: %s. Please see the Athenaeum manual for more information.", t, code, str)
-	} else {
-		fmtStr = fmt.Sprintf("| %s.", str)
-	}
-
-	return fmtStr
-}
-
 func LogDebug(str string) {
 	file := fileLogger()
 	defer file.Close()
@@ -35,7 +24,7 @@ func LogDebug(str string) {
 	mw := io.MultiWriter(os.Stdout, file)
 	logger := log.New(mw, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	formatted := fmtString(str, "", 0)
+	formatted := fmtrs.FormatLogString(str, "", 0)
 
 	logger.Println(formatted)
 }
@@ -47,7 +36,7 @@ func LogInfo(str string) {
 	mw := io.MultiWriter(os.Stdout, file)
 	logger := log.New(mw, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	formatted := fmtString(str, "", 0)
+	formatted := fmtrs.FormatLogString(str, "", 0)
 
 	logger.Println(formatted)
 }
@@ -59,7 +48,7 @@ func LogWarn(str string, warnCode int) {
 	mw := io.MultiWriter(os.Stdout, file)
 	logger := log.New(mw, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	formatted := fmtString(str, "", 0)
+	formatted := fmtrs.FormatLogString(str, "", 0)
 
 	logger.Println(formatted)
 }
@@ -71,7 +60,7 @@ func LogErr(str string, errCode int) {
 	mw := io.MultiWriter(os.Stdout, file)
 	logger := log.New(mw, "WARNING: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	formatted := fmtString(str, "err", errCode)
+	formatted := fmtrs.FormatLogString(str, "err", errCode)
 
 	logger.Println(formatted)
 }
@@ -83,7 +72,7 @@ func LogFatal(str string, fatalErrCode int) {
 	mw := io.MultiWriter(os.Stdout, file)
 	logger := log.New(mw, "FATAL ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	formatted := fmtString(str, "ftl", fatalErrCode)
+	formatted := fmtrs.FormatLogString(str, "ftl", fatalErrCode)
 
 	logger.Println(formatted)
 	os.Exit(1)
