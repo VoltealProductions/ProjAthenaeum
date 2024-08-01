@@ -23,6 +23,7 @@ go.work.sum
 
 # Custom Rules
 temp
+.env
 releases
 compose.yml
 tailwindcss
