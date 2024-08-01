@@ -24,13 +24,10 @@ WORKDIR /server
 RUN echo "Copying files form build stage..."
 COPY --from=build /app/bin /server/athaeneum
 COPY --from=build /app/public /server/public
-COPY --from=build /app/prod.env /server/prod.env
+COPY --from=build /app/.env /server/.env
 
 RUN echo "Creating logs dir..."
 RUN mkdir logs
 
-RUN echo "Exposing port..."
-EXPOSE 3030
-
 RUN echo "Executing binary..."
-ENTRYPOINT [ "./athaeneum", "-prod", "-port", "3030" ]
+ENTRYPOINT [ "./athaeneum", "-prod" ]

@@ -9,11 +9,10 @@ build:
 	@bash ./scripts/build.sh
 
 # Podman Commands
-build-img:
-	@podman build -t athenaeum .
-
-run-img:
-	@podman run --replace -p 3030:3030 -it --name athenaeum athenaeum
+docker-up:
+	@docker compose --env-file .env build && docker compose --env-file .env up
+docker-down:
+	@docker compose --env-file .env down
 
 # Templ Commands
 templ-watch:

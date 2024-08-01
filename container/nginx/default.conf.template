@@ -1,0 +1,13 @@
+server {
+    listen ${NGINX_PORT};
+    server_name ${NGINX_HOST};
+
+    location / {
+        proxy_pass http://${WEBSERVER_HOST}:${WEBSERVER_PORT}/;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+    }
+}

@@ -3,21 +3,30 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/VoltealProductions/Athenaeum/internal/app"
 	"github.com/VoltealProductions/Athenaeum/internal/config"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
+	"github.com/joho/godotenv"
 )
 
 func main() {
 	config.Set()
 	if config.Prod {
-		logger.LogInfo("Environment set to: prod")
+		err := godotenv.Overload(".env")
+		if err != nil {
+			log.Fatal(err)
+		}
 	} else {
-		logger.LogInfo("Environment set to: dev")
+		err := godotenv.Overload("dev.env")
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
-	logger.LogInfo(fmt.Sprintf("Athenaeum Webserver now running on port: %v", config.Port))
+	logger.LogInfo(fmt.Sprintf("Athenaeum Webserver now running on port: %v", os.Getenv("WEBSERVER_PORT")))
 	app := app.New()
 	if err := app.Start(context.TODO()); err != nil {
 		logger.LogFatal(err.Error(), 1)

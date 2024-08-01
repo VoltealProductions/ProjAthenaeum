@@ -6,5 +6,5 @@ import (
 )
 
 func GetHomepage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Hello, Home Page!")
+	fmt.Fprintln(w, "Hello, World!")
 }

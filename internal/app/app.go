@@ -3,12 +3,15 @@ package app
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/VoltealProductions/Athenaeum/internal/config"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/joho/godotenv"
 )
 
 type App struct {
@@ -24,8 +27,20 @@ func New() *App {
 }
 
 func (a *App) Start(ctx context.Context) error {
+	if config.Prod {
+		err := godotenv.Overload(".env")
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		err := godotenv.Overload("dev.env")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	server := &http.Server{
-		Addr:    fmt.Sprintf("localhost:%s", config.Port),
+		Addr:    fmt.Sprintf("%s:%s", os.Getenv("WEBSERVER_HOST"), os.Getenv("WEBSERVER_PORT")),
 		Handler: a.router,
 	}
 
