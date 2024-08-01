@@ -2,13 +2,11 @@
 tidy:
 	go mod tidy
 run:
-	go run ./cmd/athenaeum/main.go -domain=":3030"
+	go run ./cmd/webserver/main.go -domain=":3030"
 test:
-	go test -cover ./athenaeum/...
+	go test -cover ./...
 build:
-	go build -v -o ./bin/athenaeum/app ./cmd/athenaeum/main.go
-br:
-	bash ./scripts/build-release.sh
+	bash ./scripts/build.sh
 
 # Templ Commands
 templ-watch:
