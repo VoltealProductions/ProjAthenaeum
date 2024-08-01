@@ -16,6 +16,18 @@ func fileLogger() *os.File {
 	return logFile
 }
 
+func fmtString(str, t string, code any) string {
+	fmtStr := ""
+
+	if code != 0 {
+		fmtStr = fmt.Sprintf("| Code %s-%v: %s. Please see the Athenaeum manual for more information.", t, code, str)
+	} else {
+		fmtStr = fmt.Sprintf("| %s.", str)
+	}
+
+	return fmtStr
+}
+
 func LogDebug(str string) {
 	file := fileLogger()
 	defer file.Close()
@@ -62,7 +74,6 @@ func LogErr(str string, errCode int) {
 	formatted := fmtString(str, "err", errCode)
 
 	logger.Println(formatted)
-	os.Exit(11)
 }
 
 func LogFatal(str string, fatalErrCode int) {
@@ -76,16 +87,4 @@ func LogFatal(str string, fatalErrCode int) {
 
 	logger.Println(formatted)
 	os.Exit(1)
-}
-
-func fmtString(str, t string, code any) string {
-	fmtStr := ""
-
-	if code != 0 {
-		fmtStr = fmt.Sprintf("| Code %s-%v: %s. Please see the Athenaeum manual for more information.", t, code, str)
-	} else {
-		fmtStr = fmt.Sprintf("| %s.", str)
-	}
-
-	return fmtStr
 }
