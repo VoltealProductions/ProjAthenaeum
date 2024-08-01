@@ -22,7 +22,7 @@ func New() *App {
 
 func (a *App) Start(ctx context.Context) error {
 	server := &http.Server{
-		Addr:    fmt.Sprintf("localhost%s", config.Port),
+		Addr:    fmt.Sprintf("localhost:%s", config.Port),
 		Handler: a.router,
 	}
 

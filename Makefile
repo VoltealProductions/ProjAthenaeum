@@ -2,7 +2,7 @@
 tidy:
 	go mod tidy
 run:
-	go run ./cmd/webserver/main.go -port=":3030"
+	go run ./cmd/webserver/main.go -port="3030"
 test:
 	go test -cover ./...
 build:
