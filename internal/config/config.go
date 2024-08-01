@@ -7,14 +7,16 @@ import (
 )
 
 var (
-	Prod bool
-	Port string
+	Prod      bool
+	Detatched bool
+	Port      string
 )
 
 func Set() {
 	godotenv.Load("./env")
 
 	flag.BoolVar(&Prod, "prod", false, "Production mode; hide all errors.")
-	flag.StringVar(&Port, "port", "8080", "The desired port to lsiten on. Example: -port=\"8080\"")
+	flag.BoolVar(&Detatched, "d", false, "Run Athenaeum in detatched mode.")
+	flag.StringVar(&Port, "port", "8080", "The desired port to lsiten on.")
 	flag.Parse()
 }

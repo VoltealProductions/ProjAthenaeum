@@ -3,22 +3,23 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"github.com/VoltealProductions/Athenaeum/internal/app"
 	"github.com/VoltealProductions/Athenaeum/internal/config"
+	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 )
 
 func main() {
 	config.Set()
 	if config.Prod {
-		fmt.Println("Environment set to: prod. Hiding errors.")
+		logger.LogInfo("Environment set to: prod")
 	} else {
-		fmt.Println("Environment set to: dev. Showing errors.")
+		logger.LogInfo("Environment set to: dev")
 	}
 
+	logger.LogInfo(fmt.Sprintf("Athenaeum Webserver now running on port: %v", config.Port))
 	app := app.New()
 	if err := app.Start(context.TODO()); err != nil {
-		log.Fatal(err)
+		logger.LogFatal(err.Error(), 1)
 	}
 }

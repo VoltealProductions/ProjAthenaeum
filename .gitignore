@@ -26,4 +26,5 @@ temp
 .env
 releases
 compose.yml
+*.log
 tailwindcss
