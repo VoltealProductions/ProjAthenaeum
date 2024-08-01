@@ -23,7 +23,7 @@ go.work.sum
 
 # Custom Rules
 temp
-.env
+*.env
 releases
 compose.yml
 *.log

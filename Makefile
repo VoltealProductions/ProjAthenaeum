@@ -1,18 +1,25 @@
 # Go Commands
 tidy:
-	go mod tidy
+	@go mod tidy
 run:
-	go run ./cmd/webserver/main.go -port="3030"
+	@go run ./cmd/webserver/main.go -port="3030"
 test:
-	go test -cover ./...
+	@go test -cover ./...
 build:
-	bash ./scripts/build.sh
+	@bash ./scripts/build.sh
+
+# Podman Commands
+build-img:
+	@podman build -t athenaeum .
+
+run-img:
+	@podman run --replace -p 3030:3030 -it --name athenaeum athenaeum
 
 # Templ Commands
 templ-watch:
-	templ generate -watch
+	@templ generate -watch
 templ-gen:
-	templ generate
+	@templ generate
 
 # Tailwind Css Commands
 tw-build:

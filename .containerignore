@@ -1,0 +1,12 @@
+.git/
+.github/
+bin/
+temp/
+scripts/
+*.md
+Containerfile
+.containerignore
+.gitignore
+.gitkeep
+dev.env
+.env.example
