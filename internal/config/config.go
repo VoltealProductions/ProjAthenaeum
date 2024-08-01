@@ -1,0 +1,14 @@
+package config
+
+import "flag"
+
+var (
+	Prod bool
+	Port string
+)
+
+func Set() {
+	flag.BoolVar(&Prod, "prod", false, "Production mode; hide all errors.")
+	flag.StringVar(&Port, "port", ":8080", "The desired port to lsiten on. Example: -domain=\":8080\"")
+	flag.Parse()
+}
