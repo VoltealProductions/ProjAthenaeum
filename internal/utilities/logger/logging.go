@@ -8,7 +8,7 @@ import (
 )
 
 func fileLogger() *os.File {
-	logFile, err := os.OpenFile("./logs/appLogs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	logFile, err := os.OpenFile("./logs/system.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
