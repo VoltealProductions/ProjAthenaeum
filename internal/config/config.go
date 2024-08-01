@@ -18,5 +18,6 @@ func Set() {
 	flag.BoolVar(&Prod, "prod", false, "Production mode; hide all errors.")
 	flag.BoolVar(&Detatched, "d", false, "Run Athenaeum in detatched mode.")
 	flag.StringVar(&Port, "port", "8080", "The desired port to lsiten on.")
+
 	flag.Parse()
 }
