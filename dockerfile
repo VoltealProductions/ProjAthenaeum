@@ -18,7 +18,6 @@ WORKDIR /server
 RUN echo "Copying files form build stage..."
 COPY --from=build /app/bin /server/athaeneum
 COPY --from=build /app/public /server/public
-COPY --from=build /app/.env /server/.env
 
 RUN echo "Creating logs dir..."
 RUN mkdir logs
