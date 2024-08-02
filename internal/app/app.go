@@ -10,6 +10,7 @@ import (
 	"github.com/VoltealProductions/Athenaeum/internal/config"
 	"github.com/VoltealProductions/Athenaeum/internal/database"
 	"github.com/VoltealProductions/Athenaeum/internal/database/models"
+	"github.com/VoltealProductions/Athenaeum/internal/database/seeder"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"github.com/go-chi/chi/v5"
@@ -20,6 +21,10 @@ import (
 
 type App struct {
 	router http.Handler
+}
+
+type DbConfig struct {
+	DB *gorm.DB
 }
 
 func New() *App {
@@ -43,7 +48,11 @@ func (a *App) Start(ctx context.Context) error {
 		logger.LogErr(err.Error(), 503)
 	}
 
-	err = migrator(db)
+	dbCfg := DbConfig{
+		DB: db,
+	}
+
+	err = dbCfg.migrator()
 	if err != nil {
 		logger.LogErr(err.Error(), 503)
 	}
@@ -115,8 +124,14 @@ func systemRouter(acr *chi.Mux) *chi.Mux {
 	return acr
 }
 
-func migrator(db *gorm.DB) error {
-	return db.AutoMigrate(
+func (appCfg *DbConfig) migrator() error {
+	err := appCfg.DB.AutoMigrate(
 		&models.User{},
 	)
+
+	if config.Seed {
+		seeder.RunSeeders(10)
+	}
+
+	return err
 }
