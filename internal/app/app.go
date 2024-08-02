@@ -27,12 +27,7 @@ func New() *App {
 }
 
 func (a *App) Start(ctx context.Context) error {
-	if config.Prod {
-		err := godotenv.Overload(".env")
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else {
+	if !config.Prod {
 		err := godotenv.Overload("dev.env")
 		if err != nil {
 			log.Fatal(err)

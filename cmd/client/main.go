@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/VoltealProductions/Athenaeum/internal/app"
 	"github.com/VoltealProductions/Athenaeum/internal/config"
@@ -26,7 +25,7 @@ func main() {
 		}
 	}
 
-	logger.LogInfo(fmt.Sprintf("Athenaeum Webserver now running on port: %v", os.Getenv("WEBSERVER_PORT")))
+	logger.LogInfo(fmt.Sprintln("Athenaeum Webserver now running!"))
 	app := app.New()
 	if err := app.Start(context.TODO()); err != nil {
 		logger.LogFatal(err.Error(), 1)
