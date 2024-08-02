@@ -6,12 +6,11 @@ package_name=athenaeum
 
 platforms=(
 "linux/amd64"
-"linux/arm"
-"linux/arm64"
+#"linux/arm"
+#"linux/arm64"
 )
 
 make templ-gen
-make tw-build
 make tw-minify
 
 for platform in "${platforms[@]}"
@@ -29,10 +28,16 @@ do
       output_name+='.exe'
   fi
 
+	cpyfldr=./releases/release-$GOOS-${GOARCH}/$version
+
+  mkdir -p $cpyfldr
+	cp -r ./public $cpyfldr
+	cp -r .env $cpyfldr
+
   echo "Building releases/release-${os}-${GOARCH}/$version/$output_name..."
   env GOOS=$GOOS GOARCH=$GOARCH go build \
   -ldflags "-X github.com/VoltealProductions/athenaeum.Version=$version" \
-  -o ./releases/release-$GOOS-${GOARCH}/$version/$output_name ./cmd/webserver/main.go
+  -o $cpyfldr/$output_name ./cmd/webserver/main.go
   if [ $? -ne 0 ]; then
       echo 'An error has occurred! Aborting.'
       exit 1

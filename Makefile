@@ -25,3 +25,7 @@ run: templ-gen tw-build
 	@go run ./cmd/client/main.go
 test:
 	@go test -cover ./...
+
+# Bash Scripts
+build-release:
+	@bash ./scripts/build.sh
