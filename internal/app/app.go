@@ -8,10 +8,14 @@ import (
 	"os"
 
 	"github.com/VoltealProductions/Athenaeum/internal/config"
+	"github.com/VoltealProductions/Athenaeum/internal/database"
+	"github.com/VoltealProductions/Athenaeum/internal/database/models"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
+	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
 type App struct {
@@ -34,12 +38,22 @@ func (a *App) Start(ctx context.Context) error {
 		}
 	}
 
+	db, err := database.ConnectToDb()
+	if err != nil {
+		logger.LogErr(err.Error(), 503)
+	}
+
+	err = migrator(db)
+	if err != nil {
+		logger.LogErr(err.Error(), 503)
+	}
+
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%s", os.Getenv("WEBSERVER_HOST"), os.Getenv("WEBSERVER_PORT")),
 		Handler: a.router,
 	}
 
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
 		return fmt.Errorf("failed to start server: %w", err)
 	}
@@ -99,4 +113,10 @@ func systemRouter(acr *chi.Mux) *chi.Mux {
 	acr.Post("/logout", func(w http.ResponseWriter, r *http.Request) {})
 
 	return acr
+}
+
+func migrator(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&models.User{},
+	)
 }
