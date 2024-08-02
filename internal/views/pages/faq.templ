@@ -1,0 +1,47 @@
+package pages
+
+import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
+
+templ Faq() {
+	@layout.Base() {
+		<h1 class="text-3xl text-center font-bold py-1 mb-3 text-white bg-primary">Frequently Asked Questions</h1>
+		<article class="col-span-full px-4 pb-1">
+			<div class="text-sm border-b border-solid pb-2">
+				<p>
+					This is the Official Argent Archives Frequently Asked Questions page.
+					If you have a question that hasn't been answered here, or you want more thoroughly explained,
+					please contact us using the
+					<a class="text-link visited:text-visitedlink hover:underline" href="/contact">Contact form</a>.
+				</p>
+			</div>
+			<div class="text-sm mb-2 mx-2 pb-2">
+				<h2 class="text-2xl text-left font-bold mb-2">Index of Topics</h2>
+				<ol class="ml-2 space-y-1 text-gray-900 list-decimal list-inside [counter-reset:section]">
+					<li class="[counter-increment:section] marker:[content:counters(section,'.', ' ')]">
+						<a href="#1">Guidelines and Rules</a>
+					</li>
+					<li class="[counter-increment:section] marker:[content:counters(section,'.', ' ')]">
+						<span class="font-bold"><a href="#2">General Questions</a></span>
+						<ol class="pl-4 ml-2 space-y-1 text-gray-900 [counter-reset:section]">
+							<li class="[counter-increment:section] marker:[content:counters(section,'.')] pl-1">
+								<a href="#2.1">Example Question</a>
+							</li>
+						</ol>
+					</li>
+				</ol>
+			</div>
+			<hr class="my-3"/>
+			<div class="text-sm border-b border-solid pb-2 mb-2 mx-2">
+				<h2 id="1" class="text-2xl text-left font-bold mb-2">1. Guidelines and Rules</h2>
+				<p class="ml-2 mb-2">Placeholder</p>
+			</div>
+			<div class="text-sm border-b border-solid pb-2 mb-2 mx-2">
+				<h2 id="2" class="text-2xl text-left font-bold mb-2">2 General Questions</h2>
+				<div class="mx-2">
+					<h3 id="2.1" class="text-xl text-left font-bold mb-2">2.1 Example Question</h3>
+					<p class="ml-2 mb-2">Placeholder</p>
+				</div>
+			</div>
+		</article>
+	}
+}

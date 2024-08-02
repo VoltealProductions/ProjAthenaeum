@@ -62,7 +62,11 @@ func loadRoutes() *chi.Mux {
 	staticFileServer(router)
 	router.Group(func(r chi.Router) {
 		// Base Website Routes
-		router.Get("/", handlers.GetHomepage)
+		router.Get("/", handlers.IndexHandler)
+		router.Get("/about", handlers.AboutHandler)
+		router.Get("/terms", handlers.TermsHandler)
+		router.Get("/faq", handlers.FaqHandler)
+		router.Get("/contact", handlers.ContactHandler)
 
 		// System POST Routes only (Register, Login, Logout, activate, etc)
 		router.Mount("/sys", systemRouter(chi.NewRouter()))
@@ -70,6 +74,7 @@ func loadRoutes() *chi.Mux {
 		// Archive Routes (Characters, Guilds)
 		archiveRouter := chi.NewRouter()
 		archiveRouter.Mount("/characters", characterRouter(chi.NewRouter()))
+		archiveRouter.Mount("/guilds", GuildRouter(chi.NewRouter()))
 		router.Mount("/archive", archiveRouter)
 	})
 
@@ -82,6 +87,11 @@ func staticFileServer(r *chi.Mux) {
 }
 
 func characterRouter(acr *chi.Mux) *chi.Mux {
+	acr.Get("/", func(w http.ResponseWriter, r *http.Request) {})
+	return acr
+}
+
+func GuildRouter(acr *chi.Mux) *chi.Mux {
 	acr.Get("/", func(w http.ResponseWriter, r *http.Request) {})
 	return acr
 }
