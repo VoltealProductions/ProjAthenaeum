@@ -1,0 +1,43 @@
+package partials
+
+import "github.com/VoltealProductions/Athenaeum/internal/views/partials/components"
+
+templ LeftSidebar() {
+	<div class="bg-black/45 p-1">
+		<h1 class="text-center text-white pb-1 text-base font-bold"></h1>
+	</div>
+	<div>
+		@components.NavComponent()
+	</div>
+	<div class="bg-black/45 p-1">
+		<h1 class="text-center text-white pb-1 text-base font-bold">
+			The Archives
+		</h1>
+	</div>
+	<div>
+		@components.NavComponent()
+	</div>
+	<div class="bg-black/45 p-1">
+		<h1 class="text-center text-white pb-1 text-base font-bold">
+			The User Section
+		</h1>
+	</div>
+	<div>
+		@components.UserMenu()
+	</div>
+}
+
+templ RightSidebar() {
+	<div class="bg-black/45 p-1">
+		<h1 class="text-center text-white pb-1 text-base font-bold">
+			Upcoming Roleplay Events
+		</h1>
+	</div>
+	<div>
+		<ul class="bg-black/35">
+			<li class="px-2 py-2 border-b border-white/45 odd:bg-black/35 even:bg-black/45 last:border-0">
+				<h3 class="text-center text-white">No Upcoming Events Exist</h3>
+			</li>
+		</ul>
+	</div>
+}
