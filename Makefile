@@ -22,7 +22,7 @@ tw-minify:
 tidy:
 	@go mod tidy
 run: templ-gen tw-build
-	@go run ./cmd/client/main.go -dev
+	@go run ./cmd/client/main.go
 test:
 	@go test -cover ./...
 

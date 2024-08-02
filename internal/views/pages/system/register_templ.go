@@ -8,6 +8,8 @@ package system
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
+
 func Register() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -26,7 +28,25 @@ func Register() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <label class=\"color-honey\" for=\"username\"></label> <input class=\"color-honey\" autocomplete=\"off\" type=\"text\" name=\"username\" id=\"username\" placeholder=\"Your username here\"> <label class=\"color-honey\" for=\"email\"></label> <input class=\"color-honey\" autocomplete=\"off\" type=\"text\" name=\"email\" id=\"email\" placeholder=\"Your email here\"> <label class=\"color-honey\" for=\"password\"></label> <input class=\"color-honey\" autocomplete=\"off\" type=\"password\" name=\"password\" id=\"password\" placeholder=\"Your password here\"> <button type=\"submit\">Register account</button></form>")
+		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New User Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <button type=\"submit\">Register account</button></form>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return templ_7745c5c3_Err
+		})
+		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -34,7 +54,7 @@ func Register() templ.Component {
 	})
 }
 
-func RegisterError(errors []string) templ.Component {
+func RegisterWithUser(errors []string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -47,12 +67,74 @@ func RegisterError(errors []string) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var2 == nil {
-			templ_7745c5c3_Var2 = templ.NopComponent
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <label class=\"color-honey\" for=\"username\"></label> <input class=\"color-honey\" autocomplete=\"off\" type=\"text\" name=\"username\" id=\"username\" placeholder=\"Your username here\"> <label class=\"color-honey\" for=\"email\"></label> <input class=\"color-honey\" autocomplete=\"off\" type=\"text\" name=\"email\" id=\"email\" placeholder=\"Your email here\"> <label class=\"color-honey\" for=\"password\"></label> <input class=\"color-honey\" autocomplete=\"off\" type=\"password\" name=\"password\" id=\"password\" placeholder=\"Your password here\"> <button type=\"submit\">Register account</button></form>")
+		templ_7745c5c3_Var4 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <button type=\"submit\">Register account</button></form>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return templ_7745c5c3_Err
+		})
+		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func RegisterWithError(errors []string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var5 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var5 == nil {
+			templ_7745c5c3_Var5 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <button type=\"submit\">Register account</button></form>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return templ_7745c5c3_Err
+		})
+		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

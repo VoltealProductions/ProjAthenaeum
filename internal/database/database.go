@@ -8,6 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func open(s string) (*gorm.DB, error) {
 	return gorm.Open(postgres.Open(s), &gorm.Config{})
 }
@@ -18,5 +20,6 @@ func ConnectToDb() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	DB = db
 	return db, nil
 }

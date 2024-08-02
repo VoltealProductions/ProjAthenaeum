@@ -5,13 +5,11 @@ import (
 )
 
 var (
-	Dev  bool
-	Seed bool
+	Dev bool
 )
 
 func Set() {
-	flag.BoolVar(&Dev, "dev", false, "Development mode; hide all errors.")
-	flag.BoolVar(&Seed, "seed", false, "Tell the application to seed the Database with test data.")
+	flag.BoolVar(&Dev, "dev", true, "Development mode; hide all errors.")
 
 	flag.Parse()
 }

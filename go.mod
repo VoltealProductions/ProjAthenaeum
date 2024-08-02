@@ -5,9 +5,9 @@ go 1.22.5
 require (
 	github.com/a-h/templ v0.2.747
 	github.com/go-chi/chi/v5 v5.1.0
-	github.com/go-faker/faker/v4 v4.4.2
 	github.com/golang-module/carbon v1.7.3
 	github.com/joho/godotenv v1.5.1
+	golang.org/x/crypto v0.25.0
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.25.11
 )
@@ -24,7 +24,6 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/rogpeppe/go-internal v1.3.0 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
-	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 )

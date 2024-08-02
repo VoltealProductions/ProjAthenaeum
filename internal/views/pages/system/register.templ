@@ -1,39 +1,51 @@
 package system
 
+import (
+	"github.com/VoltealProductions/Athenaeum/internal/models"
+	"github.com/VoltealProductions/Athenaeum/internal/views/layout"
+)
+
 templ Register() {
-	<h1 class="text-3xl text-red-500">Register a New Account!</h1>
-	<form action="/register" method="post">
-		<label for="unameksljf">Username:</label>
-		<input type="text" name="unameksljf" id="unameksljf"/>
-		<label for="emaillkjkl">Email:</label>
-		<input type="text" name="emaillkjkl" id="emaillkjkl"/>
-		<label for="pwdlkjkl">Password:</label>
-		<input type="password" name="pwdlkjkl" id="pwdlkjkl"/>
-		<label class="color-honey" for="username"></label>
-		<input class="color-honey" autocomplete="off" type="text" name="username" id="username" placeholder="Your username here"/>
-		<label class="color-honey" for="email"></label>
-		<input class="color-honey" autocomplete="off" type="text" name="email" id="email" placeholder="Your email here"/>
-		<label class="color-honey" for="password"></label>
-		<input class="color-honey" autocomplete="off" type="password" name="password" id="password" placeholder="Your password here"/>
-		<button type="submit">Register account</button>
-	</form>
+	@layout.Base() {
+		<h1 class="text-3xl text-red-500">Register a New User Account!</h1>
+		<form action="/register" method="post">
+			<label for="unameksljf">Username:</label>
+			<input type="text" name="unameksljf" id="unameksljf"/>
+			<label for="emaillkjkl">Email:</label>
+			<input type="text" name="emaillkjkl" id="emaillkjkl"/>
+			<label for="pwdlkjkl">Password:</label>
+			<input type="password" name="pwdlkjkl" id="pwdlkjkl"/>
+			<button type="submit">Register account</button>
+		</form>
+	}
 }
 
-templ RegisterError(errors []string) {
-	<h1 class="text-3xl text-red-500">Register a New Account!</h1>
-	<form action="/register" method="post">
-		<label for="unameksljf">Username:</label>
-		<input type="text" name="unameksljf" id="unameksljf"/>
-		<label for="emaillkjkl">Email:</label>
-		<input type="text" name="emaillkjkl" id="emaillkjkl"/>
-		<label for="pwdlkjkl">Password:</label>
-		<input type="password" name="pwdlkjkl" id="pwdlkjkl"/>
-		<label class="color-honey" for="username"></label>
-		<input class="color-honey" autocomplete="off" type="text" name="username" id="username" placeholder="Your username here"/>
-		<label class="color-honey" for="email"></label>
-		<input class="color-honey" autocomplete="off" type="text" name="email" id="email" placeholder="Your email here"/>
-		<label class="color-honey" for="password"></label>
-		<input class="color-honey" autocomplete="off" type="password" name="password" id="password" placeholder="Your password here"/>
-		<button type="submit">Register account</button>
-	</form>
+templ RegisterWithUser(user models.User) {
+	@layout.Base() {
+		<h1 class="text-3xl text-red-500">Register a New Account!</h1>
+		<form action="/register" method="post">
+			<label for="unameksljf">Username:</label>
+			<input type="text" name="unameksljf" id="unameksljf"/>
+			<label for="emaillkjkl">Email:</label>
+			<input type="text" name="emaillkjkl" id="emaillkjkl"/>
+			<label for="pwdlkjkl">Password:</label>
+			<input type="password" name="pwdlkjkl" id="pwdlkjkl"/>
+			<button type="submit">Register account</button>
+		</form>
+	}
+}
+
+templ RegisterWithErrors(errors []string) {
+	@layout.Base() {
+		<h1 class="text-3xl text-red-500">Register a New Account!</h1>
+		<form action="/register" method="post">
+			<label for="unameksljf">Username:</label>
+			<input type="text" name="unameksljf" id="unameksljf"/>
+			<label for="emaillkjkl">Email:</label>
+			<input type="text" name="emaillkjkl" id="emaillkjkl"/>
+			<label for="pwdlkjkl">Password:</label>
+			<input type="password" name="pwdlkjkl" id="pwdlkjkl"/>
+			<button type="submit">Register account</button>
+		</form>
+	}
 }
