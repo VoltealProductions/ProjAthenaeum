@@ -5,11 +5,11 @@ import (
 )
 
 var (
-	Prod bool
+	Dev bool
 )
 
 func Set() {
-	flag.BoolVar(&Prod, "prod", false, "Production mode; hide all errors.")
+	flag.BoolVar(&Dev, "dev", false, "Development mode; hide all errors.")
 
 	flag.Parse()
 }

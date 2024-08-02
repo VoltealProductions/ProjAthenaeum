@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/VoltealProductions/Athenaeum/internal/app"
@@ -13,19 +12,14 @@ import (
 
 func main() {
 	config.Set()
-	if config.Prod {
-		err := godotenv.Overload(".env")
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else {
+	if !config.Dev {
 		err := godotenv.Overload("dev.env")
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	logger.LogInfo(fmt.Sprintln("Athenaeum Webserver now running!"))
+	logger.LogInfo("Athenaeum Webserver now running")
 	app := app.New()
 	if err := app.Start(context.TODO()); err != nil {
 		logger.LogFatal(err.Error(), 1)
