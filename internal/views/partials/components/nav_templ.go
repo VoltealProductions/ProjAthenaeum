@@ -26,6 +26,10 @@ func NavComponent() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/archive/characters/\">People</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/archive/guilds/\">Guild</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/archive/noticeboards/\">Noticeboard</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/archive/narratives/\">Adventure Archive</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/archive/documents/\">Adventure Archive</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/archive/news\">News Archive</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">Galleries</a></li></ul>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		return templ_7745c5c3_Err
 	})
 }
