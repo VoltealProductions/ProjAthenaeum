@@ -25,6 +25,5 @@ go.work.sum
 temp
 *.env
 releases
-compose.yml
 *.log
 tailwindcss
