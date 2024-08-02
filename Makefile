@@ -1,13 +1,3 @@
-# Go Commands
-tidy:
-	@go mod tidy
-run:
-	@go run ./cmd/webserver/main.go -port="3030"
-test:
-	@go test -cover ./...
-build:
-	@bash ./scripts/build.sh
-
 # Podman Commands
 docker-up:
 	@docker compose --env-file .env build && docker compose --env-file .env up
@@ -22,8 +12,16 @@ templ-gen:
 
 # Tailwind Css Commands
 tw-build:
-	@./tailwindcss -i ./web/static/css/input.css -o ./web/static/css/default/style.css
+	@./tailwindcss -i ./public/css/input.css -o ./public/css/default/style.css
 tw-watch:
-	@./tailwindcss -i ./web/static/css/input.css -o ./web/static/css/default/style.css --watch
+	@./tailwindcss -i ./public/css/input.css -o ./public/css/default/style.css --watch
 tw-minify:
-	@./tailwindcss -i ./web/static/css/input.css -o ./web/static/css/default/style.min.css --minify
+	@./tailwindcss -i ./public/css/input.css -o ./public/css/default/style.min.css --minify
+
+# Go Commands
+tidy:
+	@go mod tidy
+run: templ-gen tw-build
+	@go run ./cmd/client/main.go
+test:
+	@go test -cover ./...

@@ -1,0 +1,139 @@
+package pages
+
+import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
+
+templ Contact() {
+	@layout.Base() {
+		<h1 class="text-3xl text-center font-bold py-1 mb-3 text-white bg-primary">Contact Us</h1>
+		<article class="col-span-full px-4 pb-1">
+			<div class="text-sm border-b border-solid pb-2">
+				<p class="mb-2">
+					You can leave a message using the contact form below. If you have an error to report, or a complaint of any
+					kind, it is helpful if you explain how to find the content that is troublesome, or which offends or bothers
+					you in some way.
+				</p>
+				<p class="mb-2">
+					<span class="font-bold">Note:</span> the Azerothian Archives is run entirely by
+					volunteers, <span class="underline">in their free time</span>. It might take a little while for us to get
+					around to your message. Please be patient!
+				</p>
+				<p class="mb-2">
+					Also, please <span class="underline">DO NOT SEND MULTIPLE MAILS</span> about the same
+					issue! It is not going to be picked up or solved any sooner.
+				</p>
+			</div>
+			<div class="border-b border-solid pb-2">
+				<form class="bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4" action="#" method="post">
+					<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+							Your Account Name <span
+	class="font-bold"
+>*</span>
+						</label>
+						<input
+							class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+							type="text"
+							name="name"
+							id="name"
+							autocomplete="off"
+							placeholder="Account Name"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+							Your Account Email <span
+	class="font-bold"
+>*</span>
+						</label>
+						<input
+							class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+							type="email"
+							name="email"
+							id="email"
+							autocomplete="off"
+							placeholder="Account Email"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="subject">
+							Message Subject <span
+	class="font-bold"
+>*</span>
+						</label>
+						<input
+							class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+							type="text"
+							name="subject"
+							id="subject"
+							autocomplete="off"
+							placeholder="Message Subject"
+						/>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="category">
+							Select a Category <span
+	class="font-bold"
+>*</span>
+						</label>
+						<select
+							class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+							name="category"
+							id="category"
+						>
+							<option class="text-gray-900" value="No Category">--- </option>
+							<option class="text-gray-900" value="Website Feedback">Website Feedback</option>
+							<option class="text-gray-900" value="Character Name Taken">
+								Character Name Taken
+							</option>
+							<option class="text-gray-900" value="Account Issue">Account Issue</option>
+							<option class="text-gray-900" value="Complaint">Complaint</option>
+							<option class="text-gray-900" value="I Want to Volenteer">
+								I Want to Volenteer
+							</option>
+						</select>
+					</div>
+					<div class="mb-4">
+						<label class="block text-gray-700 text-sm font-bold mb-2" for="message">
+							Message <span
+	class="font-bold"
+>*</span>
+						</label>
+						<textarea
+							class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+							placeholder="Write your message here..."
+							name="message"
+							id="message"
+						></textarea>
+					</div>
+					<div class="mb-3">
+						<label for="option">
+							<input type="checkbox" name="option" id="option"/>
+							Send yourself a copy.
+						</label>
+					</div>
+					<div class="mb-0">
+						<button class="p-2 bg-gray-500 text-white rounded-lg" type="submit">Send Email</button>
+					</div>
+				</form>
+			</div>
+			<div class="border-b text-sm border-solid pb-2">
+				<h2 class="text-3xl text-left font-bold py-3">Advice</h2>
+				<p class="mb-1 pb-2 border-b">
+					Please include <span class="font-bold">links</span> to the content in question. The more information we
+					have, the faster we
+					can help with your problem.
+				</p>
+				<p class="mb-1 pb-2 border-b">
+					If you are having trouble with editing your background/outward appearance, try using Google Chrome or
+					Mozilla Firefox. The problem is often caused by using Internet Explorer or Microsoft Edge.
+				</p>
+				<p class="mb-1">
+					If the form above does not work for you for some reason, you can also send an e-mail to
+					<span class="font-bold">contact@archive.org</span>. If you do so, please state clearly which
+					character/account you are mailing
+					about and why you are mailing us, as well as the information we ask in the form above.
+				</p>
+			</div>
+		</article>
+	}
+}
