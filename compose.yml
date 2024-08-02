@@ -2,7 +2,7 @@ services:
   webserver:
     build:
       context: .
-      dockerfile: Containerfile
+      dockerfile: dockerfile
     env_file:
       - .env
     container_name: ${WEBSERVER_HOST}

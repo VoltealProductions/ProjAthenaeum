@@ -11,12 +11,6 @@ COPY . .
 RUN echo "Building binary"
 RUN go build -o bin ./cmd/client/main.go
 
-RUN echo "Exposing Port: 3030"
-EXPOSE 3030
-
-RUN echo "Running binary"
-ENTRYPOINT [ "./bin", "-prod", "-port", "3030" ]
-
 FROM alpine:latest AS server
 
 WORKDIR /server
@@ -30,4 +24,4 @@ RUN echo "Creating logs dir..."
 RUN mkdir logs
 
 RUN echo "Executing binary..."
-ENTRYPOINT [ "./athaeneum", "-prod" ]
+ENTRYPOINT [ "/server/athaeneum", "-prod" ]
