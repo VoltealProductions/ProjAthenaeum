@@ -1,7 +1,7 @@
 services:
   webserver:
     build:
-      context: .
+      context: ./container
       dockerfile: Containerfile
     env_file:
       - .env
