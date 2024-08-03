@@ -10,31 +10,40 @@ import (
 )
 
 func GetRegisterPage(w http.ResponseWriter, r *http.Request) {
-	err := utilities.RenderView(w, r, system.Register(utilities.GetFlashMessage(w, r)))
+	r.ParseForm()
+	err := utilities.RenderView(w, r, system.RegisterIndex())
 	if err != nil {
 		logger.LogFatal(err.Error(), 500)
 	}
 }
 
 func PostRegisterPage(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()
-	if r.FormValue("accepttos") == "true" {
-		public := false
-		if r.FormValue("public") == "true" {
-			public = true
+	values, errors := parseUserFormValidationAndValidate(r)
+	if len(errors) > 0 {
+		err := utilities.RenderView(w, r, system.Register(values, errors))
+		if err != nil {
+			logger.LogErr(err.Error(), 500)
 		}
-		err := models.CreateUser(r.FormValue("username"), r.FormValue("email"), r.FormValue("password"), public)
-		if err != "" {
-			utilities.SetFlash(w, "error", []byte(err), "/")
-			http.Redirect(w, r, "/s/register", http.StatusSeeOther)
-			return
-		} else {
-			fm := []byte("Your account was created successfully!")
-			utilities.SetFlash(w, "success", fm, "/")
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-		}
-	} else {
-		utilities.SetFlash(w, "error", []byte("Accepting the terms and conditions is required to register!"), "/")
-		http.Redirect(w, r, "/s/register", http.StatusSeeOther)
 	}
+	err := models.CreateUser(values.Username, values.Email, values.Password, r.FormValue("public") == "true")
+	if err != "" {
+	} else {
+		fm := []byte("Your account was created successfully!")
+		utilities.SetFlash(w, "success", fm, "/")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+}
+
+func parseUserFormValidationAndValidate(r *http.Request) (system.CreateFormValues, map[string]string) {
+	r.ParseForm()
+
+	vals := system.CreateFormValues{
+		Username:  r.FormValue("username"),
+		Email:     r.FormValue("email"),
+		Password:  r.FormValue("password"),
+		Public:    r.FormValue("public"),
+		TosAccept: r.FormValue("accepttos"),
+	}
+
+	return vals, vals.Validate()
 }

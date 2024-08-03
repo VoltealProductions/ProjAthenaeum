@@ -1,0 +1,12 @@
+package components
+
+templ ValErrors(errors map[string]string) {
+	<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+		<p class="font-bold">Validation Errors were encountered</p>
+		<ul class="pl-8 list-disc">
+			for _, error := range errors {
+				<li>{ error }</li>
+			}
+		</ul>
+	</div>
+}

@@ -9,12 +9,48 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/VoltealProductions/Athenaeum/internal/models"
 	"github.com/VoltealProductions/Athenaeum/internal/views/layout"
-	"github.com/VoltealProductions/Athenaeum/internal/views/partials"
+	"github.com/VoltealProductions/Athenaeum/internal/views/partials/components"
+	"strings"
 )
 
-func Register(t, m string) templ.Component {
+type CreateFormValues struct {
+	Username  string
+	Email     string
+	Password  string
+	Public    string
+	TosAccept string
+}
+
+func (values CreateFormValues) isTrue(p string) bool {
+	if p == "on" {
+		return true
+	}
+	return false
+}
+
+func (values CreateFormValues) Validate() map[string]string {
+	errors := map[string]string{}
+	if len(values.Username) < 5 || len(values.Username) > 50 {
+		errors["errors"] = "The username should be between 5 and 50 characters long"
+	}
+	if len(values.Email) < 5 || len(values.Email) > 50 {
+		errors["errors"] = "The email should be between 5 and 50 characters long"
+	}
+	if len(values.Password) < 10 || len(values.Password) > 45 {
+		errors["errors"] = "The password should be between 10 and 45 characters long"
+	}
+	if !strings.Contains(values.Email, "@") {
+		errors["errors"] = "The email should be a valid email address between 5 and 50 characters long"
+	}
+	if values.TosAccept != "true" {
+		errors["errors"] = "The terms and conditions must be accepted to make an account"
+	}
+
+	return errors
+}
+
+func RegisterIndex() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -44,11 +80,7 @@ func Register(t, m string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = partials.RenderFlash(t, m).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <h1 class=\"text-3xl text-center font-bold py-1 mb-3 text-white bg-primary\">About the Archives</h1><article class=\"col-span-full px-4 pb-1\"><div class=\"text-sm border-b border-solid pb-2\"><form class=\"bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4\" action=\"/s/register\" method=\"post\"><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"username\">Account username <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"text\" name=\"username\" id=\"username\" autocomplete=\"off\" placeholder=\"Account Username\"></div><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"email\">Email <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"text\" name=\"email\" id=\"email\" autocomplete=\"off\" placeholder=\"Account Email\"></div><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"password\">Password <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"password\" name=\"password\" id=\"password\" autocomplete=\"off\" placeholder=\"Account Password\"></div><div class=\"mb-4\"><input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"public\" name=\"public\" value=\"true\"> <label for=\"public\" class=\"ms-2 text-sm font-medium text-gray-900\">Make my profile publically viewable.</label></div><div class=\"mb-4\"><input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"accepttos\" name=\"accepttos\" value=\"true\"> <label for=\"accepttos\" class=\"ms-2 text-sm font-medium text-gray-900\">I agree with the <a target=\"_blank\" href=\"/terms\" class=\"text-blue-600 dark:text-blue-500 hover:underline\">terms and conditions</a>. <span class=\"font-bold text-red-600\">*</span></label></div><div class=\"mb-2\"><p>Fields marked with a <span class=\"font-bold text-red-600\">*</span> are required.</p></div><div><button class=\"p-2 bg-gray-500 text-white rounded-lg\" type=\"submit\">Register account</button></div></form></div></article>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-center font-bold py-1 mb-3 text-white bg-primary\">About the Archives</h1><article class=\"col-span-full px-4 pb-1\"><div class=\"text-sm border-b border-solid pb-2\"><form class=\"bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4\" action=\"/s/register\" method=\"post\"><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"username\">Account username <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"text\" name=\"username\" id=\"username\" autocomplete=\"off\" placeholder=\"Account Username\"></div><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"email\">Email <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"text\" name=\"email\" id=\"email\" autocomplete=\"off\" placeholder=\"Account Email\"></div><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"password\">Password <span class=\"font-bold text-red-600\">*</span> [<strong class=\"font-bold underline\">DONT</strong> use your battle.net password.]</label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"password\" name=\"password\" id=\"password\" autocomplete=\"off\" placeholder=\"Account Password\"></div><div class=\"mb-4\"><input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"public\" name=\"public\" value=\"true\"> <label for=\"public\" class=\"ms-2 text-sm font-medium text-gray-900\">Make my profile publically viewable.</label></div><div class=\"mb-4\"><input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"accepttos\" name=\"accepttos\" value=\"true\"> <label for=\"accepttos\" class=\"ms-2 text-sm font-medium text-gray-900\">I agree with the <a target=\"_blank\" href=\"/terms\" class=\"text-blue-600 dark:text-blue-500 hover:underline\">terms and conditions</a>. <span class=\"font-bold text-red-600\">*</span></label></div><div class=\"mb-2\"><p>Fields marked with a <span class=\"font-bold text-red-600\">*</span> are required.</p></div><div><button class=\"p-2 bg-gray-500 text-white rounded-lg\" type=\"submit\">Register account</button></div></form></div></article>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -62,7 +94,7 @@ func Register(t, m string) templ.Component {
 	})
 }
 
-func RegisterWithUser(user models.User) templ.Component {
+func Register(values CreateFormValues, errors map[string]string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -92,57 +124,58 @@ func RegisterWithUser(user models.User) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <button type=\"submit\">Register account</button></form>")
+			templ_7745c5c3_Err = components.ValErrors(errors).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <h1 class=\"text-3xl text-center font-bold py-1 mb-3 text-white bg-primary\">About the Archives</h1><article class=\"col-span-full px-4 pb-1\"><div class=\"text-sm border-b border-solid pb-2\"><form class=\"bg-gray-50 shadow-md rounded px-8 pt-6 pb-8 mb-4\" action=\"/s/register\" method=\"post\"><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"username\">Account username <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"text\" name=\"username\" id=\"username\" autocomplete=\"off\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(values.Username)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/register.templ`, Line: 131, Col: 30}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" placeholder=\"Account Username\"></div><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"email\">Email <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"text\" name=\"email\" id=\"email\" autocomplete=\"off\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(values.Email)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/register.templ`, Line: 145, Col: 27}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" placeholder=\"Account Email\"></div><div class=\"mb-4\"><label class=\"block text-gray-700 text-sm font-bold mb-2\" for=\"password\">Password <span class=\"font-bold text-red-600\">*</span></label> <input class=\"block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 \" type=\"password\" name=\"password\" id=\"password\" autocomplete=\"off\" placeholder=\"Account Password\"></div><div class=\"mb-4\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if values.isTrue(values.Public) == true {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"public\" name=\"public\" checked> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"public\" name=\"public\"> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<label for=\"public\" class=\"ms-2 text-sm font-medium text-gray-900\">Make my profile publically viewable.</label></div><div class=\"mb-4\"><input class=\"w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2\" type=\"checkbox\" id=\"accepttos\" name=\"accepttos\"> <label for=\"accepttos\" class=\"ms-2 text-sm font-medium text-gray-900\">I agree with the <a target=\"_blank\" href=\"/terms\" class=\"text-blue-600 dark:text-blue-500 hover:underline\">terms and conditions</a>. <span class=\"font-bold text-red-600\">*</span></label></div><div class=\"mb-2\"><p>Fields marked with a <span class=\"font-bold text-red-600\">*</span> are required.</p></div><div><button class=\"p-2 bg-gray-500 text-white rounded-lg\" type=\"submit\">Register account</button></div></form></div></article>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		return templ_7745c5c3_Err
-	})
-}
-
-func RegisterWithErrors(errors []string) templ.Component {
-	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-		if !templ_7745c5c3_IsBuffer {
-			defer func() {
-				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err == nil {
-					templ_7745c5c3_Err = templ_7745c5c3_BufErr
-				}
-			}()
-		}
-		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var5 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var5 == nil {
-			templ_7745c5c3_Var5 = templ.NopComponent
-		}
-		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
-					}
-				}()
-			}
-			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1 class=\"text-3xl text-red-500\">Register a New Account!</h1><form action=\"/register\" method=\"post\"><label for=\"unameksljf\">Username:</label> <input type=\"text\" name=\"unameksljf\" id=\"unameksljf\"> <label for=\"emaillkjkl\">Email:</label> <input type=\"text\" name=\"emaillkjkl\" id=\"emaillkjkl\"> <label for=\"pwdlkjkl\">Password:</label> <input type=\"password\" name=\"pwdlkjkl\" id=\"pwdlkjkl\"> <button type=\"submit\">Register account</button></form>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			return templ_7745c5c3_Err
-		})
-		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
