@@ -71,6 +71,7 @@ func (env *Env) loadRoutes() *chi.Mux {
 
 func (env *Env) systemRouter(acr *chi.Mux) *chi.Mux {
 	acr.Get("/register", handlers.GetRegisterPage)
+	acr.Post("/register", handlers.PostRegisterPage)
 	acr.Get("/activate", func(w http.ResponseWriter, r *http.Request) {})
 	acr.Get("/login", func(w http.ResponseWriter, r *http.Request) {})
 	acr.Get("/reset", func(w http.ResponseWriter, r *http.Request) {})
