@@ -22,7 +22,7 @@ go.work
 go.work.sum
 
 # Custom Rules
-temp
+tmp
 *.env
 releases
 *.log

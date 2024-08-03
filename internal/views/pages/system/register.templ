@@ -35,7 +35,7 @@ func (values CreateFormValues) Validate() map[string]string {
 	if !strings.Contains(values.Email, "@") {
 		errors["errors"] = "The email should be a valid email address between 5 and 50 characters long"
 	}
-	if values.TosAccept != "true" {
+	if values.TosAccept != "on" {
 		errors["errors"] = "The terms and conditions must be accepted to make an account"
 	}
 
@@ -88,13 +88,13 @@ templ RegisterIndex() {
 						/>
 					</div>
 					<div class="mb-4">
-						<input class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2" type="checkbox" id="public" name="public" value="true"/>
+						<input class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2" type="checkbox" id="public" name="public"/>
 						<label for="public" class="ms-2 text-sm font-medium text-gray-900">
 							Make my profile publically viewable.
 						</label>
 					</div>
 					<div class="mb-4">
-						<input class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2" type="checkbox" id="accepttos" name="accepttos" value="true"/>
+						<input class="w-4 h-4 text-blue-600 bg-gray-200 border-gray-500 rounded focus:ring-blue-500 focus:ring-2" type="checkbox" id="accepttos" name="accepttos"/>
 						<label for="accepttos" class="ms-2 text-sm font-medium text-gray-900">
 							I agree with the <a target="_blank" href="/terms" class="text-blue-600 dark:text-blue-500 hover:underline">terms and conditions</a>. <span class="font-bold text-red-600">*</span>
 						</label>
