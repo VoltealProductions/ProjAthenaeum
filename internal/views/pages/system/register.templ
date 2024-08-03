@@ -3,10 +3,12 @@ package system
 import (
 	"github.com/VoltealProductions/Athenaeum/internal/models"
 	"github.com/VoltealProductions/Athenaeum/internal/views/layout"
+	"github.com/VoltealProductions/Athenaeum/internal/views/partials"
 )
 
-templ Register() {
+templ Register(t, m string) {
 	@layout.Base() {
+		@partials.RenderFlash(t, m)
 		<h1 class="text-3xl text-center font-bold py-1 mb-3 text-white bg-primary">About the Archives</h1>
 		<article class="col-span-full px-4 pb-1">
 			<div class="text-sm border-b border-solid pb-2">

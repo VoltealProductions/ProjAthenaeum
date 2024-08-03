@@ -4,6 +4,8 @@ import (
 	"encoding/base64"
 	"net/http"
 	"time"
+
+	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 )
 
 func SetFlash(w http.ResponseWriter, name string, value []byte, path string) {
@@ -38,4 +40,50 @@ func encode(src []byte) string {
 
 func decode(src string) ([]byte, error) {
 	return base64.URLEncoding.DecodeString(src)
+}
+
+func GetFlashMessage(w http.ResponseWriter, r *http.Request) (string, string) {
+	sfm := getSuccessFm(w, r)
+	if sfm != "" {
+		return "success", sfm
+	}
+
+	efm := getErrorFm(w, r)
+	if efm != "" {
+		return "error", efm
+	}
+
+	return "", ""
+}
+
+func getSuccessFm(w http.ResponseWriter, r *http.Request) string {
+	fm, err := GetFlash(w, r, "success")
+	if err != nil {
+		logger.LogErr(err.Error(), 500)
+		return ""
+	}
+
+	s := string(fm)
+
+	if s == "" {
+		return ""
+	}
+
+	return s
+}
+
+func getErrorFm(w http.ResponseWriter, r *http.Request) string {
+	fm, err := GetFlash(w, r, "error")
+	if err != nil {
+		logger.LogErr(err.Error(), 500)
+		return ""
+	}
+
+	s := string(fm)
+
+	if s == "" {
+		return ""
+	}
+
+	return s
 }

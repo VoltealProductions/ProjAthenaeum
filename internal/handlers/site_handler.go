@@ -5,12 +5,11 @@ import (
 	"net/http"
 
 	"github.com/VoltealProductions/Athenaeum/internal/utilities"
-	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"github.com/VoltealProductions/Athenaeum/internal/views/pages"
 )
 
 func GetIndexHandler(w http.ResponseWriter, r *http.Request) {
-	err := utilities.RenderView(w, r, pages.Index(getFlashMessage(w, r)))
+	err := utilities.RenderView(w, r, pages.Index(utilities.GetFlashMessage(w, r)))
 	if err != nil {
 		utilities.RespondWithError(w, 500, fmt.Sprintf("Error rendering template for Index page: %v", err.Error()))
 	}
@@ -42,31 +41,4 @@ func GetContactHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utilities.RespondWithError(w, 500, fmt.Sprintf("Error rendering template for Contact page: %v", err.Error()))
 	}
-}
-
-func getFlashMessage(w http.ResponseWriter, r *http.Request) (string, string) {
-	fm := getSuccessFm(w, r)
-
-	if fm == "" {
-		return "", ""
-	}
-
-	logger.LogInfo(fm)
-	return "success", fm
-}
-
-func getSuccessFm(w http.ResponseWriter, r *http.Request) string {
-	fm, err := utilities.GetFlash(w, r, "success")
-	if err != nil {
-		logger.LogErr(err.Error(), 500)
-		return ""
-	}
-
-	s := string(fm)
-
-	if s == "" {
-		return ""
-	}
-
-	return s
 }

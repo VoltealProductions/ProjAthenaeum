@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/VoltealProductions/Athenaeum/internal/models"
@@ -11,7 +10,7 @@ import (
 )
 
 func GetRegisterPage(w http.ResponseWriter, r *http.Request) {
-	err := utilities.RenderView(w, r, system.Register())
+	err := utilities.RenderView(w, r, system.Register(utilities.GetFlashMessage(w, r)))
 	if err != nil {
 		logger.LogFatal(err.Error(), 500)
 	}
@@ -25,15 +24,17 @@ func PostRegisterPage(w http.ResponseWriter, r *http.Request) {
 			public = true
 		}
 		err := models.CreateUser(r.FormValue("username"), r.FormValue("email"), r.FormValue("password"), public)
-		if err != nil {
-			logger.LogErr(err.Error(), 503)
+		if err != "" {
+			utilities.SetFlash(w, "error", []byte(err), "/")
+			http.Redirect(w, r, "/s/register", http.StatusSeeOther)
+			return
+		} else {
+			fm := []byte("Your account was created successfully!")
+			utilities.SetFlash(w, "success", fm, "/")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
-
-		fm := []byte("Your account was created successfully!")
-		utilities.SetFlash(w, "success", fm, "/")
-		logger.LogInfo(fmt.Sprintf("Set A Cookie: %v. Redirecting!", fm))
-		http.Redirect(w, r, "/", http.StatusSeeOther)
 	} else {
-		w.Write([]byte("NOT ACCEPTED"))
+		utilities.SetFlash(w, "error", []byte("Accepting the terms and conditions is required to register!"), "/")
+		http.Redirect(w, r, "/s/register", http.StatusSeeOther)
 	}
 }
