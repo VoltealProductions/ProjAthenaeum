@@ -26,7 +26,7 @@ func UserMenu() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">Register</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">Login</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">Reset Password</a></li></ul>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/register\">Register</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/login\">Login</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/reset\">Reset Password</a></li></ul>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

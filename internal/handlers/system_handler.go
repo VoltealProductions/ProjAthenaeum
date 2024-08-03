@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/VoltealProductions/Athenaeum/internal/models"
@@ -18,8 +19,21 @@ func GetRegisterPage(w http.ResponseWriter, r *http.Request) {
 
 func PostRegisterPage(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	_, err := models.CreateUser(r.FormValue("username"), r.FormValue("email"), r.FormValue("password"))
-	if err != nil {
-		logger.LogErr(err.Error(), 503)
+	if r.FormValue("accepttos") == "true" {
+		public := false
+		if r.FormValue("public") == "true" {
+			public = true
+		}
+		err := models.CreateUser(r.FormValue("username"), r.FormValue("email"), r.FormValue("password"), public)
+		if err != nil {
+			logger.LogErr(err.Error(), 503)
+		}
+
+		fm := []byte("Your account was created successfully!")
+		utilities.SetFlash(w, "success", fm, "/")
+		logger.LogInfo(fmt.Sprintf("Set A Cookie: %v. Redirecting!", fm))
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	} else {
+		w.Write([]byte("NOT ACCEPTED"))
 	}
 }

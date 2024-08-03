@@ -39,7 +39,7 @@ func GetUserById() {
 func GetUserByEmail() {
 }
 
-func CreateUser(username, email, password string) (uint, error) {
+func CreateUser(username, email, password string, public bool) error {
 	connect()
 
 	pwd, err := hash.HashPassword(password)
@@ -51,9 +51,10 @@ func CreateUser(username, email, password string) (uint, error) {
 		Username: username,
 		Email:    email,
 		Password: pwd,
+		Public:   public,
 	}
 
 	result := db.Create(&user)
 
-	return user.ID, result.Error
+	return result.Error
 }
