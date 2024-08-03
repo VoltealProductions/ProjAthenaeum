@@ -26,7 +26,8 @@ func PostRegisterPage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	err := models.CreateUser(values.Username, values.Email, values.Password, r.FormValue("public") == "on")
-	if err != "" {
+	if err != nil {
+		logger.LogFatal(err.Error(), 503)
 	} else {
 		fm := []byte("Your account was created successfully!")
 		utilities.SetFlash(w, "success", fm, "/")

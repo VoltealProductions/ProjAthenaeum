@@ -39,12 +39,12 @@ func GetUserById() {
 func GetUserByEmail() {
 }
 
-func CreateUser(username, email, password string, public bool) string {
+func CreateUser(username, email, password string, public bool) error {
 	connect()
 
 	pwd, err := hash.HashPassword(password)
 	if err != nil {
-		logger.LogFatal(err.Error(), 500)
+		return err
 	}
 
 	user := User{
@@ -54,6 +54,6 @@ func CreateUser(username, email, password string, public bool) string {
 		Public:   public,
 	}
 
-	db.Create(&user)
-	return ""
+	res := db.Create(&user)
+	return res.Error
 }
