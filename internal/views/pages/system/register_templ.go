@@ -8,7 +8,10 @@ package system
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
+import (
+	"github.com/VoltealProductions/Athenaeum/internal/models"
+	"github.com/VoltealProductions/Athenaeum/internal/views/layout"
+)
 
 func Register() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -54,7 +57,7 @@ func Register() templ.Component {
 	})
 }
 
-func RegisterWithUser(errors []string) templ.Component {
+func RegisterWithUser(user models.User) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -98,7 +101,7 @@ func RegisterWithUser(errors []string) templ.Component {
 	})
 }
 
-func RegisterWithError(errors []string) templ.Component {
+func RegisterWithErrors(errors []string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
