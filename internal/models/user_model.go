@@ -55,6 +55,5 @@ func CreateUser(username, email, password string, public bool) error {
 	}
 
 	result := db.Create(&user)
-
 	return result.Error
 }
