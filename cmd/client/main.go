@@ -7,42 +7,27 @@ import (
 	"os"
 
 	"github.com/VoltealProductions/Athenaeum/internal/config"
-	"github.com/VoltealProductions/Athenaeum/internal/database"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/joho/godotenv"
-	"gorm.io/gorm"
 )
 
-type Env struct {
-	db *gorm.DB
-}
-
 func main() {
-	config.Set()
-
-	if config.Dev {
-		err := godotenv.Overload("dev.env")
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	db, err := database.ConnectToDb()
+	config.SetFlags()
+	err := config.LoadEnvVariables()
 	if err != nil {
-		logger.LogFatal(err.Error(), 503)
+		log.Fatal(err)
 	}
-	env := &Env{db: db}
-	r := env.loadRoutes()
+
+	r := loadRoutes()
 
 	if err := http.ListenAndServe(fmt.Sprintf("%s:%v", os.Getenv("WEBSERVER_HOST"), os.Getenv("WEBSERVER_PORT")), r); err != nil {
 		logger.LogFatal(err.Error(), 500)
 	}
 }
 
-func (env *Env) loadRoutes() *chi.Mux {
+func loadRoutes() *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
@@ -58,34 +43,52 @@ func (env *Env) loadRoutes() *chi.Mux {
 	router.Get("/contact", handlers.GetContactHandler)
 
 	// System POST Routes only (Register, Login, Logout, activate, etc)
-	router.Mount("/s", env.systemRouter(chi.NewRouter()))
+	router.Mount("/s", systemRouter(chi.NewRouter()))
 
 	// Archive Routes (Characters, Guilds)
 	archiveRouter := chi.NewRouter()
-	archiveRouter.Mount("/characters", env.characterRouter(chi.NewRouter()))
-	archiveRouter.Mount("/guilds", env.guildRouter(chi.NewRouter()))
+	archiveRouter.Mount("/characters", characterRouter(chi.NewRouter()))
+	archiveRouter.Mount("/guilds", guildRouter(chi.NewRouter()))
 	router.Mount("/archive", archiveRouter)
+
+	//storyRouter := chi.NewRouter()
+	//storyRouter.Mount("/characters", env.characterRouter(chi.NewRouter()))
+	//storyRouter.Mount("/guilds", env.guildRouter(chi.NewRouter()))
+	//router.Mount("/stories", storyRouter)
+
+	//galleryRouter := chi.NewRouter()
+	//galleryRouter.Mount("/characters", env.characterRouter(chi.NewRouter()))
+	//galleryRouter.Mount("/guilds", env.guildRouter(chi.NewRouter()))
+	//router.Mount("/archive/gallery", galleryRouter)
 
 	return router
 }
 
-func (env *Env) systemRouter(acr *chi.Mux) *chi.Mux {
+func systemRouter(acr *chi.Mux) *chi.Mux {
+	// Login and Register routes
 	acr.Get("/register", handlers.GetRegisterPage)
 	acr.Post("/register", handlers.PostRegisterPage)
-	acr.Get("/activate", func(w http.ResponseWriter, r *http.Request) {})
-	acr.Get("/login", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Get("/login", handlers.GetLoginPage)
+	acr.Post("/login", handlers.PostLoginPage)
+
+	// Password Reset and logout routes
 	acr.Get("/reset", func(w http.ResponseWriter, r *http.Request) {})
-	acr.Get("/logout", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Post("/reset", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Post("/logout", func(w http.ResponseWriter, r *http.Request) {})
+
+	// Account activation routes
+	acr.Get("/activate", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Post("/activate", func(w http.ResponseWriter, r *http.Request) {})
 
 	return acr
 }
 
-func (env *Env) characterRouter(acr *chi.Mux) *chi.Mux {
+func characterRouter(acr *chi.Mux) *chi.Mux {
 	acr.Get("/", func(w http.ResponseWriter, r *http.Request) {})
 	return acr
 }
 
-func (env *Env) guildRouter(acr *chi.Mux) *chi.Mux {
+func guildRouter(acr *chi.Mux) *chi.Mux {
 	acr.Get("/", func(w http.ResponseWriter, r *http.Request) {})
 	return acr
 }

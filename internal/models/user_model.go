@@ -13,9 +13,9 @@ var db *gorm.DB
 
 type User struct {
 	ID         uint           `gorm:"primaryKey;autoIncrement" json:"id"`
-	Username   string         `gorm:"not null;unique" validate:"required" json:"username"`
-	Email      string         `gorm:"not null;unique" validate:"required" json:"email"`
-	Password   string         `gorm:"not null;" validate:"required" json:"password"`
+	Username   string         `gorm:"not null;unique" json:"username"`
+	Email      string         `gorm:"not null;unique" json:"email"`
+	Password   string         `gorm:"not null;" json:"password"`
 	Public     bool           `gorm:"default:false;" json:"public"`
 	Banned     bool           `gorm:"default:false;" json:"banned"`
 	VerifiedAt sql.NullTime   `gorm:"default:NULL" json:"verified_at"`
@@ -31,12 +31,6 @@ func connect() {
 	}
 
 	db = dbConn
-}
-
-func GetUserById() {
-}
-
-func GetUserByEmail() {
 }
 
 func CreateUser(username, email, password string, public bool) error {
@@ -56,4 +50,23 @@ func CreateUser(username, email, password string, public bool) error {
 
 	res := db.Create(&user)
 	return res.Error
+}
+
+func GetXUsers() {
+}
+
+func GetUserById() {
+}
+
+// Is the only function that fetches the user's password.
+func GetUserForLogin() {
+}
+
+func UpdateUser() {
+}
+
+func SoftDeleteUser() {
+}
+
+func HardDeleteUser() {
 }
