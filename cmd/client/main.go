@@ -7,6 +7,7 @@ import (
 
 	"github.com/VoltealProductions/Athenaeum/internal/config"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
+	mid "github.com/VoltealProductions/Athenaeum/internal/middleware"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -42,6 +43,7 @@ func loadRoutes() *chi.Mux {
 
 	// Archive Routes (Characters, Guilds)
 	archiveRouter := chi.NewRouter()
+	archiveRouter.Use(mid.Test)
 	archiveRouter.Mount("/characters", characterRouter(chi.NewRouter()))
 	archiveRouter.Mount("/guilds", guildRouter(chi.NewRouter()))
 	router.Mount("/archive", archiveRouter)
@@ -79,7 +81,7 @@ func systemRouter(acr *chi.Mux) *chi.Mux {
 }
 
 func characterRouter(acr *chi.Mux) *chi.Mux {
-	acr.Get("/", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Get("/", handlers.CharacterIndex)
 	return acr
 }
 
