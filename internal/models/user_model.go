@@ -1,41 +1,26 @@
 package models
 
 import (
-	"database/sql"
+	"errors"
 
 	"github.com/VoltealProductions/Athenaeum/internal/database"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/hash"
-	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"gorm.io/gorm"
 )
 
-var db *gorm.DB
-
 type User struct {
-	ID         uint           `gorm:"primaryKey;autoIncrement" json:"id"`
-	Username   string         `gorm:"not null;unique" json:"username"`
-	Email      string         `gorm:"not null;unique" json:"email"`
-	Password   string         `gorm:"not null;" json:"password"`
-	Public     bool           `gorm:"default:false;" json:"public"`
-	Banned     bool           `gorm:"default:false;" json:"banned"`
-	VerifiedAt sql.NullTime   `gorm:"default:NULL" json:"verified_at"`
-	CreatedAt  sql.NullTime   `gorm:"autoCreateTime" json:"created_at"`
-	UpdatedAt  sql.NullTime   `gorm:"autoUpdateTime" json:"updated_at"`
-	DeletedAt  gorm.DeletedAt `gorm:"index" json:"deletedAt"`
+	Username string `gorm:"not null;unique" json:"username"`
+	Email    string `gorm:"not null;unique" json:"email"`
+	Password string `gorm:"not null;" json:"password"`
+	Public   bool   `gorm:"default:false;" json:"public"`
+	Banned   bool   `gorm:"default:false;" json:"banned"`
+	Verified bool   `gorm:"default:false" json:"verified"`
+	gorm.Model
 }
 
-func connect() {
-	dbConn, err := database.ConnectToDb()
-	if err != nil {
-		logger.LogFatal(err.Error(), 503)
-	}
-
-	db = dbConn
-}
+var db = database.DB
 
 func CreateUser(username, email, password string, public bool) error {
-	connect()
-
 	pwd, err := hash.HashPassword(password)
 	if err != nil {
 		return err
@@ -69,4 +54,22 @@ func SoftDeleteUser() {
 }
 
 func HardDeleteUser() {
+}
+
+func UniqueEmail(email string) error {
+	user := User{}
+	result := db.Where("email = ?", email).First(&user)
+	if result.RowsAffected != 0 {
+		return errors.New("an account with that email already exists")
+	}
+	return nil
+}
+
+func UniqueUsername(username string) error {
+	user := User{}
+	result := db.Where("username = ?", username).First(&user)
+	if result.RowsAffected != 0 {
+		return errors.New("an account with that username already exists")
+	}
+	return nil
 }
