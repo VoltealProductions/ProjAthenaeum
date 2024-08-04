@@ -21,19 +21,16 @@ func (values CreateFormValues) isTrue(p string) bool {
 	return false
 }
 
-func (values CreateFormValues) Validate() map[string]string {
+func (values CreateFormValues) RegValidate() map[string]string {
 	errors := map[string]string{}
 	if len(values.Username) < 5 || len(values.Username) > 50 {
 		errors["errors"] = "The username should be between 5 and 50 characters long"
 	}
-	if len(values.Email) < 5 || len(values.Email) > 50 {
+	if len(values.Email) < 5 || len(values.Email) > 50 || !strings.Contains(values.Email, "@") {
 		errors["errors"] = "The email should be between 5 and 50 characters long"
 	}
 	if len(values.Password) < 10 || len(values.Password) > 45 {
 		errors["errors"] = "The password should be between 10 and 45 characters long"
-	}
-	if !strings.Contains(values.Email, "@") {
-		errors["errors"] = "The email should be a valid email address between 5 and 50 characters long"
 	}
 	if values.TosAccept != "on" {
 		errors["errors"] = "The terms and conditions must be accepted to make an account"
@@ -111,7 +108,7 @@ templ RegisterIndex() {
 	}
 }
 
-templ Register(values CreateFormValues, errors map[string]string) {
+templ RegisterError(values CreateFormValues, errors map[string]string) {
 	@layout.Base() {
 		@components.ValErrors(errors)
 		<h1 class="text-3xl text-center font-bold py-1 mb-3 text-white bg-primary">About the Archives</h1>

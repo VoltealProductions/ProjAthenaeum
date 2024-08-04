@@ -29,19 +29,16 @@ func (values CreateFormValues) isTrue(p string) bool {
 	return false
 }
 
-func (values CreateFormValues) Validate() map[string]string {
+func (values CreateFormValues) RegValidate() map[string]string {
 	errors := map[string]string{}
 	if len(values.Username) < 5 || len(values.Username) > 50 {
 		errors["errors"] = "The username should be between 5 and 50 characters long"
 	}
-	if len(values.Email) < 5 || len(values.Email) > 50 {
+	if len(values.Email) < 5 || len(values.Email) > 50 || !strings.Contains(values.Email, "@") {
 		errors["errors"] = "The email should be between 5 and 50 characters long"
 	}
 	if len(values.Password) < 10 || len(values.Password) > 45 {
 		errors["errors"] = "The password should be between 10 and 45 characters long"
-	}
-	if !strings.Contains(values.Email, "@") {
-		errors["errors"] = "The email should be a valid email address between 5 and 50 characters long"
 	}
 	if values.TosAccept != "on" {
 		errors["errors"] = "The terms and conditions must be accepted to make an account"
@@ -94,7 +91,7 @@ func RegisterIndex() templ.Component {
 	})
 }
 
-func Register(values CreateFormValues, errors map[string]string) templ.Component {
+func RegisterError(values CreateFormValues, errors map[string]string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -135,7 +132,7 @@ func Register(values CreateFormValues, errors map[string]string) templ.Component
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(values.Username)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/register.templ`, Line: 131, Col: 30}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/register.templ`, Line: 128, Col: 30}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -148,7 +145,7 @@ func Register(values CreateFormValues, errors map[string]string) templ.Component
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(values.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/register.templ`, Line: 145, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/register.templ`, Line: 142, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
