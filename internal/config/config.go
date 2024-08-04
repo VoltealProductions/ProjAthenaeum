@@ -18,8 +18,8 @@ var (
 var datB *gorm.DB
 
 func RunConfig() {
-	SetFlags()
-	err := LoadEnvVariables()
+	setFlags()
+	err := loadEnvVariables()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,15 +31,15 @@ func RunConfig() {
 
 	datB = db
 
-	MigrateDB()
+	migrateDB()
 }
 
-func SetFlags() {
+func setFlags() {
 	flag.BoolVar(&Prod, "prod", false, "Production mode; hide all errors.")
 	flag.Parse()
 }
 
-func LoadEnvVariables() error {
+func loadEnvVariables() error {
 	if os.Getenv("WEBSERVER_HOST") == "" && os.Getenv("WEBSERVER_PORT") == "" {
 		err := godotenv.Load(".env")
 		if err != nil {
@@ -49,7 +49,7 @@ func LoadEnvVariables() error {
 	return nil
 }
 
-func MigrateDB() {
+func migrateDB() {
 	err := datB.AutoMigrate(&models.User{})
 	if err != nil {
 		log.Fatal(err)
