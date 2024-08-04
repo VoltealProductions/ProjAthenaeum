@@ -5,6 +5,7 @@ import (
 
 	"github.com/VoltealProductions/Athenaeum/internal/database"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/hash"
+	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"gorm.io/gorm"
 )
 
@@ -18,7 +19,16 @@ type User struct {
 	gorm.Model
 }
 
-var db = database.DB
+var db *gorm.DB
+
+func init() {
+	datConn, err := database.ConnectToDb()
+	if err != nil {
+		logger.LogFatal(err.Error(), 503)
+	}
+
+	db = datConn
+}
 
 func CreateUser(username, email, password string, public bool) error {
 	pwd, err := hash.HashPassword(password)
@@ -44,7 +54,13 @@ func GetUserById() {
 }
 
 // Is the only function that fetches the user's password.
-func GetUserForLogin() {
+func GetUserForLogin(email string) (User, error) {
+	user := User{}
+	result := db.Where("email = ?", email).First(&user)
+	if result.RowsAffected != 1 {
+		return User{}, errors.New("the login credentials are incorrect")
+	}
+	return user, nil
 }
 
 func UpdateUser() {
