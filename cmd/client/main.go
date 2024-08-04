@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -14,11 +13,7 @@ import (
 )
 
 func main() {
-	config.SetFlags()
-	err := config.LoadEnvVariables()
-	if err != nil {
-		log.Fatal(err)
-	}
+	config.RunConfig()
 
 	r := loadRoutes()
 

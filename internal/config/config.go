@@ -2,14 +2,37 @@ package config
 
 import (
 	"flag"
+	"log"
 	"os"
 
+	"github.com/VoltealProductions/Athenaeum/internal/database"
+	"github.com/VoltealProductions/Athenaeum/internal/models"
 	"github.com/joho/godotenv"
+	"gorm.io/gorm"
 )
 
 var (
 	Prod bool
 )
+
+var datB *gorm.DB
+
+func RunConfig() {
+	SetFlags()
+	err := LoadEnvVariables()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := database.ConnectToDb()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	datB = db
+
+	MigrateDB()
+}
 
 func SetFlags() {
 	flag.BoolVar(&Prod, "prod", false, "Production mode; hide all errors.")
@@ -24,4 +47,11 @@ func LoadEnvVariables() error {
 		}
 	}
 	return nil
+}
+
+func MigrateDB() {
+	err := datB.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
