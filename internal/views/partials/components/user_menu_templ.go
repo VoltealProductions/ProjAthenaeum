@@ -33,3 +33,29 @@ func UserMenu() templ.Component {
 		return templ_7745c5c3_Err
 	})
 }
+
+func LoggedInUserMenu() templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var2 == nil {
+			templ_7745c5c3_Var2 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Account</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Profiles (0)</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Guilds (0)</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Content</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/logout\">Log Out</a></li></ul>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return templ_7745c5c3_Err
+	})
+}

@@ -86,13 +86,33 @@ func PostLoginPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &http.Cookie{
-		Name:    "session_token",
-		Value:   sessionToken,
-		Path:    "/",
-		Expires: expiresAt,
+		Name:     "session_token",
+		Value:    sessionToken,
+		Path:     "/",
+		Expires:  expiresAt,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
 	})
 
 	utilities.SetFlash(w, "success", []byte("You are now logged in!"), "/")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	c, _ := r.Cookie("session_token")
+	sessionToken := c.Value
+
+	delete(session.Sessions, sessionToken)
+
+	http.SetCookie(w, &http.Cookie{
+		Name:    "session_token",
+		Value:   "",
+		Path:    "/",
+		Expires: time.Now(),
+	})
+
+	utilities.SetFlash(w, "success", []byte("You are now logged out!"), "/")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 

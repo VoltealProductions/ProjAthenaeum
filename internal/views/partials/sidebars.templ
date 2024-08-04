@@ -23,6 +23,9 @@ templ LeftSidebar() {
 		</h1>
 	</div>
 	<div>
+		// If SESSION EXISTS && MATCHES COOKIE
+		// Render: @components.UserMenu()
+		// Render : @components.GuestMenu()
 		@components.UserMenu()
 	</div>
 }

@@ -23,9 +23,7 @@ func Test(next http.Handler) http.Handler {
 		}
 
 		tkn := c.Value
-		logger.LogInfo(tkn)
 		userSession, exists := session.Sessions[tkn]
-		logger.LogInfo(userSession.Username)
 		logger.LogInfo(fmt.Sprintf("Session exists: %v", exists))
 		if !exists {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -51,10 +49,13 @@ func Test(next http.Handler) http.Handler {
 
 		// Set the new token as the users `session_token` cookie
 		http.SetCookie(w, &http.Cookie{
-			Name:    "session_token",
-			Value:   newSessionToken,
-			Path:    "/",
-			Expires: time.Now().Add(time.Hour * 12),
+			Name:     "session_token",
+			Value:    newSessionToken,
+			Path:     "/",
+			Expires:  time.Now().Add(time.Hour * 12),
+			HttpOnly: true,
+			SameSite: http.SameSiteLaxMode,
+			Secure:   true,
 		})
 
 		next.ServeHTTP(w, r)

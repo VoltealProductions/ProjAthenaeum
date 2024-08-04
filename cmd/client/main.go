@@ -67,11 +67,11 @@ func systemRouter(acr *chi.Mux) *chi.Mux {
 	acr.Post("/register", handlers.PostRegisterPage)
 	acr.Get("/login", handlers.GetLoginPage)
 	acr.Post("/login", handlers.PostLoginPage)
+	acr.Post("/logout", handlers.Logout)
 
-	// Password Reset and logout routes
+	// Password Reset
 	acr.Get("/reset", func(w http.ResponseWriter, r *http.Request) {})
 	acr.Post("/reset", func(w http.ResponseWriter, r *http.Request) {})
-	acr.Post("/logout", func(w http.ResponseWriter, r *http.Request) {})
 
 	// Account activation routes
 	acr.Get("/activate", func(w http.ResponseWriter, r *http.Request) {})
