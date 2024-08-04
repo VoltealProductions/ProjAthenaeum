@@ -8,7 +8,30 @@ package system
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Login() templ.Component {
+import (
+	"github.com/VoltealProductions/Athenaeum/internal/views/layout"
+	"github.com/VoltealProductions/Athenaeum/internal/views/partials/components"
+	"strings"
+)
+
+type LoginFormValues struct {
+	Email    string
+	Password string
+}
+
+func (values LoginFormValues) LogValidate() map[string]string {
+	errors := map[string]string{}
+	if len(values.Email) < 5 || len(values.Email) > 50 || !strings.Contains(values.Email, "@") {
+		errors["errors"] = "The email should be between 5 and 50 characters long"
+	}
+	if len(values.Password) < 10 || len(values.Password) > 45 {
+		errors["errors"] = "The password should be between 10 and 45 characters long"
+	}
+
+	return errors
+}
+
+func LoginIndex() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -26,7 +49,25 @@ func Login() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-gray-50 font-[sans-serif] text-[#333]\"><div class=\"flex flex-col items-center justify-center py-6 px-4\"><div class=\"max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white\"><h2 class=\"text-center text-3xl font-extrabold\">Log in to your account</h2><form action=\"/login\" autocomplete=\"off\" method=\"post\" class=\"mt-10 space-y-4\"><div><input name=\"username\" type=\"username\" required class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"Username\"></div><div><input name=\"password\" type=\"password\" required class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"Password\"></div><div class=\"flex items-center justify-between gap-4\"><span class=\"px-1 py-2 text-red-600 font-bold\"></span><div class=\"flex items-center\"><a href=\"#\" class=\"text-sm text-blue-600 hover:text-blue-500\">Forgot Password?</a></div></div><div class=\"!mt-10\"><button type=\"submit\" class=\"w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none\">Log in</button></div></form></div></div></div>")
+		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-gray-50 font-[sans-serif] text-[#333]\"><div class=\"flex flex-col items-center justify-center py-6 px-4\"><div class=\"max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white\"><h2 class=\"text-center text-3xl font-extrabold\">Log in to your account</h2><form action=\"/s/login\" autocomplete=\"off\" method=\"post\" class=\"mt-10 space-y-4\"><div><input name=\"email\" type=\"email\" class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"email@example.com\"></div><div><input name=\"password\" type=\"password\" class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"Password\"></div><div class=\"flex items-center justify-between gap-4\"><span class=\"px-1 py-2 text-red-600 font-bold\"></span><div class=\"flex items-center\"><a href=\"#\" class=\"text-sm text-blue-600 hover:text-blue-500\">Forgot Password?</a></div></div><div class=\"!mt-10\"><button type=\"submit\" class=\"w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none\">Log in</button></div></form></div></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return templ_7745c5c3_Err
+		})
+		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -34,7 +75,7 @@ func Login() templ.Component {
 	})
 }
 
-func LoginError(errors []string) templ.Component {
+func LoginError(values LoginFormValues, errors map[string]string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -47,12 +88,47 @@ func LoginError(errors []string) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var2 == nil {
-			templ_7745c5c3_Var2 = templ.NopComponent
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-gray-50 font-[sans-serif] text-[#333]\"><div class=\"flex flex-col items-center justify-center py-6 px-4\"><div class=\"max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white\"><h2 class=\"text-center text-3xl font-extrabold\">Log in to your account</h2><form action=\"/login\" autocomplete=\"off\" method=\"post\" class=\"mt-10 space-y-4\"><div><input name=\"username\" type=\"username\" required class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"Username\"></div><div><input name=\"password\" type=\"password\" required class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"Password\"></div><div class=\"flex items-center justify-between gap-4\"><span class=\"px-1 py-2 text-red-600 font-bold\"></span><div class=\"flex items-center\"><a href=\"#\" class=\"text-sm text-blue-600 hover:text-blue-500\">Forgot Password?</a></div></div><div class=\"!mt-10\"><button type=\"submit\" class=\"w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none\">Log in</button></div></form></div></div></div>")
+		templ_7745c5c3_Var4 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = components.ValErrors(errors).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div class=\"bg-gray-50 font-[sans-serif] text-[#333]\"><div class=\"flex flex-col items-center justify-center py-6 px-4\"><div class=\"max-w-md w-full border py-8 px-6 rounded border-gray-300 bg-white\"><h2 class=\"text-center text-3xl font-extrabold\">Log in to your account</h2><form action=\"/s/login\" autocomplete=\"off\" method=\"post\" class=\"mt-10 space-y-4\"><div><input name=\"email\" type=\"email\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(values.Email)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/system/login.templ`, Line: 88, Col: 28}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"email@example.com\"></div><div><input name=\"password\" type=\"password\" class=\"w-full text-sm px-4 py-3 rounded outline-none border-2 focus:border-blue-500\" placeholder=\"Password\"></div><div class=\"flex items-center justify-between gap-4\"><span class=\"px-1 py-2 text-red-600 font-bold\"></span><div class=\"flex items-center\"><a href=\"/s/reset\" class=\"text-sm text-blue-600 hover:text-blue-500\">Forgot Password?</a></div></div><div class=\"!mt-10\"><button type=\"submit\" class=\"w-full py-2.5 px-4 text-sm rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none\">Log in</button></div></form></div></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return templ_7745c5c3_Err
+		})
+		templ_7745c5c3_Err = layout.Base().Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
