@@ -72,12 +72,23 @@ func SoftDeleteUser() {
 func HardDeleteUser() {
 }
 
+func BanCheck(email string) error {
+	user := User{}
+	db.Where("email = ?", email).First(&user)
+	if user.Banned {
+		return errors.New("your account was suspended, please contact an admin or see your email for more information")
+	}
+
+	return nil
+}
+
 func UniqueEmail(email string) error {
 	user := User{}
 	result := db.Where("email = ?", email).First(&user)
 	if result.RowsAffected != 0 {
 		return errors.New("an account with that email already exists")
 	}
+
 	return nil
 }
 
@@ -87,5 +98,6 @@ func UniqueUsername(username string) error {
 	if result.RowsAffected != 0 {
 		return errors.New("an account with that username already exists")
 	}
+
 	return nil
 }

@@ -50,7 +50,7 @@ func loadEnvVariables() error {
 }
 
 func migrateDB() {
-	err := datB.AutoMigrate(&models.User{})
+	err := datB.AutoMigrate(&models.User{}, models.Session{})
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
 	"github.com/VoltealProductions/Athenaeum/internal/models"
-	"github.com/VoltealProductions/Athenaeum/internal/session"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/hash"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
@@ -31,7 +31,7 @@ func PostRegisterPage(w http.ResponseWriter, r *http.Request) {
 	err := models.CreateUser(values.Username, values.Email, values.Password, r.FormValue("public") == "on")
 	if err != nil {
 		dbError := map[string]string{}
-		dbError["errors"] = "Unable to create user."
+		dbError["errors"] = fmt.Sprintf("Unable to create user: %v", err)
 		err := utilities.RenderView(w, r, system.RegisterError(values, dbError))
 		if err != nil {
 			logger.LogErr(err.Error(), 500)
@@ -77,12 +77,14 @@ func PostLoginPage(w http.ResponseWriter, r *http.Request) {
 
 	sessionToken := uuid.NewString()
 	expiresAt := time.Now().Add(time.Hour * 12)
-	logger.LogInfo(sessionToken)
-
-	session.Sessions[sessionToken] = session.Session{
-		ID:       user.ID,
-		Username: user.Username,
-		Expiry:   expiresAt,
+	err = models.StoreSesson(sessionToken, user.ID, expiresAt)
+	if err != nil {
+		errors := map[string]string{}
+		errors["errors"] = "Unable to login to server, contact site owner."
+		err := utilities.RenderView(w, r, system.LoginError(values, errors))
+		if err != nil {
+			logger.LogErr(err.Error(), 500)
+		}
 	}
 
 	http.SetCookie(w, &http.Cookie{
@@ -92,7 +94,7 @@ func PostLoginPage(w http.ResponseWriter, r *http.Request) {
 		Expires:  expiresAt,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
-		Secure:   true,
+		Secure:   false,
 	})
 
 	utilities.SetFlash(w, "success", []byte("You are now logged in!"), "/")
@@ -103,7 +105,11 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	c, _ := r.Cookie("session_token")
 	sessionToken := c.Value
 
-	delete(session.Sessions, sessionToken)
+	err := models.DeleteSession(sessionToken)
+	if err != nil {
+		utilities.SetFlash(w, "error", []byte("No session to delete, you are already logged out!"), "/")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
 
 	http.SetCookie(w, &http.Cookie{
 		Name:    "session_token",

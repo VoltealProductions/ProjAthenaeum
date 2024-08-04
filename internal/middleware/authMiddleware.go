@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/VoltealProductions/Athenaeum/internal/session"
-	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
+	"github.com/VoltealProductions/Athenaeum/internal/models"
+	"github.com/VoltealProductions/Athenaeum/internal/utilities"
 	"github.com/google/uuid"
 )
 
@@ -23,29 +23,35 @@ func Test(next http.Handler) http.Handler {
 		}
 
 		tkn := c.Value
-		userSession, exists := session.Sessions[tkn]
-		logger.LogInfo(fmt.Sprintf("Session exists: %v", exists))
+		userSession, exists := models.LoadSession(tkn)
 		if !exists {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
+			http.SetCookie(w, &http.Cookie{
+				Name:    "session_token",
+				Value:   "",
+				Path:    "/",
+				Expires: time.Now(),
+			})
+			utilities.SetFlash(w, "error", []byte(fmt.Sprintf("%v: You can not go here as a guest, please logged in!", http.StatusUnauthorized)), "/")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
 		}
 
 		if userSession.IsExpired() {
-			delete(session.Sessions, tkn)
-			w.WriteHeader(http.StatusUnauthorized)
-			return
+			err := models.DeleteSession(tkn)
+			if err != nil {
+				utilities.SetFlash(w, "error", []byte(fmt.Sprintf("%v: Your session is expired, please logged in!", http.StatusUnauthorized)), "/")
+				http.Redirect(w, r, "/", http.StatusSeeOther)
+			}
 		}
 
 		newSessionToken := uuid.NewString()
 		expiresAt := time.Now().Add(time.Hour * 12)
-		session.Sessions[newSessionToken] = session.Session{
-			ID:       userSession.ID,
-			Username: userSession.Username,
-			Expiry:   expiresAt,
-		}
+		models.StoreSesson(newSessionToken, userSession.ID, expiresAt)
 
-		// Delete the older session token
-		delete(session.Sessions, tkn)
+		err = models.DeleteSession(tkn) // Delete the old session
+		if err != nil {
+			utilities.SetFlash(w, "error", []byte("Unable to delete session, you were already logged out!"), "/")
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+		}
 
 		// Set the new token as the users `session_token` cookie
 		http.SetCookie(w, &http.Cookie{
@@ -55,7 +61,7 @@ func Test(next http.Handler) http.Handler {
 			Expires:  time.Now().Add(time.Hour * 12),
 			HttpOnly: true,
 			SameSite: http.SameSiteLaxMode,
-			Secure:   true,
+			Secure:   false,
 		})
 
 		next.ServeHTTP(w, r)

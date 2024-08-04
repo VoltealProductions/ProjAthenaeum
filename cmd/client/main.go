@@ -8,7 +8,9 @@ import (
 	"github.com/VoltealProductions/Athenaeum/internal/config"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
 	mid "github.com/VoltealProductions/Athenaeum/internal/middleware"
+	"github.com/VoltealProductions/Athenaeum/internal/utilities"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
+	"github.com/VoltealProductions/Athenaeum/internal/views/pages/httperrors"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -31,6 +33,14 @@ func loadRoutes() *chi.Mux {
 	fs := http.FileServer(http.Dir("public"))
 	router.Handle("/public/*", http.StripPrefix("/public/", fs))
 
+	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		utilities.RenderView(w, r, httperrors.NotFoundError())
+	})
+
+	router.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
+		utilities.RenderView(w, r, httperrors.NotFoundError())
+	})
+
 	// Base website routes
 	router.Get("/", handlers.GetIndexHandler)
 	router.Get("/about", handlers.GetAboutHandler)
@@ -38,7 +48,7 @@ func loadRoutes() *chi.Mux {
 	router.Get("/faq", handlers.GetFaqHandler)
 	router.Get("/contact", handlers.GetContactHandler)
 
-	// System POST Routes only (Register, Login, Logout, activate, etc)
+	// System Routes only (Register, Login, Logout, activate, errors, etc)
 	router.Mount("/s", systemRouter(chi.NewRouter()))
 
 	// Archive Routes (Characters, Guilds)
