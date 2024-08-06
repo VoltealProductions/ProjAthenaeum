@@ -26,7 +26,7 @@ func UserMenu() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/register\">Register</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/login\">Login</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/reset\">Reset Password</a></li></ul>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-black/45 p-1\"><h1 class=\"text-center text-white pb-1 text-base font-bold\">The Login Section</h1></div><div><ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/register\">Register</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/login\">Login</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/reset\">Reset Password</a></li></ul></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -34,7 +34,7 @@ func UserMenu() templ.Component {
 	})
 }
 
-func LoggedInUserMenu() templ.Component {
+func LoggedInUserMenu(name string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -52,7 +52,20 @@ func LoggedInUserMenu() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Account</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Profiles (0)</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Guilds (0)</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Content</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"/s/logout\">Log Out</a></li></ul>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"bg-black/45 p-1\"><h1 class=\"text-center text-white pb-1 text-base font-bold\">Account Section</h1><h2 class=\"text-left text-white pb-1 text-sm font-bold\">Welcome, ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/partials/components/user_menu.templ`, Line: 30, Col: 18}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("!</h2></div><div><ul class=\"bg-black/35\"><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">Edit Settings</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Profiles (0)</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Guilds (0)</a></li><li class=\"pl-3 p-1\"><a class=\"text-white\" href=\"#\">My Content</a></li><li class=\"pl-3 p-1\"><button hx-target=\"#body\" hx-swap=\"outerHTML\" hx-post=\"/s/logout\" hx-trigger=\"click\">Logout</button></li></ul></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

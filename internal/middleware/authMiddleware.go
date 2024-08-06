@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func Test(next http.Handler) http.Handler {
+func AuthedMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		c, err := r.Cookie("session_token")
 		if err != nil {

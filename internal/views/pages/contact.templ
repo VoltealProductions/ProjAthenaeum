@@ -2,8 +2,8 @@ package pages
 
 import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
 
-templ Contact() {
-	@layout.Base() {
+templ Contact(li bool) {
+	@layout.Base(li) {
 		<h1 class="text-3xl text-center font-bold py-1 mb-3 text-white bg-primary">Contact Us</h1>
 		<article class="col-span-full px-4 pb-1">
 			<div class="text-sm border-b border-solid pb-2">

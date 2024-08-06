@@ -8,6 +8,7 @@ import (
 	"github.com/VoltealProductions/Athenaeum/internal/config"
 	"github.com/VoltealProductions/Athenaeum/internal/handlers"
 	mid "github.com/VoltealProductions/Athenaeum/internal/middleware"
+	"github.com/VoltealProductions/Athenaeum/internal/models"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities"
 	"github.com/VoltealProductions/Athenaeum/internal/utilities/logger"
 	"github.com/VoltealProductions/Athenaeum/internal/views/pages/httperrors"
@@ -34,11 +35,11 @@ func loadRoutes() *chi.Mux {
 	router.Handle("/public/*", http.StripPrefix("/public/", fs))
 
 	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
-		utilities.RenderView(w, r, httperrors.NotFoundError())
+		utilities.RenderView(w, r, httperrors.NotFoundError(models.IsLoggedIn(r)))
 	})
 
 	router.MethodNotAllowed(func(w http.ResponseWriter, r *http.Request) {
-		utilities.RenderView(w, r, httperrors.NotFoundError())
+		utilities.RenderView(w, r, httperrors.NotFoundError(models.IsLoggedIn(r)))
 	})
 
 	// Base website routes
@@ -53,39 +54,37 @@ func loadRoutes() *chi.Mux {
 
 	// Archive Routes (Characters, Guilds)
 	archiveRouter := chi.NewRouter()
-	archiveRouter.Use(mid.Test)
+	archiveRouter.Use(mid.AuthedMiddleware)
 	archiveRouter.Mount("/characters", characterRouter(chi.NewRouter()))
 	archiveRouter.Mount("/guilds", guildRouter(chi.NewRouter()))
 	router.Mount("/archive", archiveRouter)
-
-	//storyRouter := chi.NewRouter()
-	//storyRouter.Mount("/characters", env.characterRouter(chi.NewRouter()))
-	//storyRouter.Mount("/guilds", env.guildRouter(chi.NewRouter()))
-	//router.Mount("/stories", storyRouter)
-
-	//galleryRouter := chi.NewRouter()
-	//galleryRouter.Mount("/characters", env.characterRouter(chi.NewRouter()))
-	//galleryRouter.Mount("/guilds", env.guildRouter(chi.NewRouter()))
-	//router.Mount("/archive/gallery", galleryRouter)
 
 	return router
 }
 
 func systemRouter(acr *chi.Mux) *chi.Mux {
-	// Login and Register routes
-	acr.Get("/register", handlers.GetRegisterPage)
-	acr.Post("/register", handlers.PostRegisterPage)
-	acr.Get("/login", handlers.GetLoginPage)
-	acr.Post("/login", handlers.PostLoginPage)
-	acr.Post("/logout", handlers.Logout)
+
+	// Account activation routes
+	acr.Get("/activate", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Post("/activate", func(w http.ResponseWriter, r *http.Request) {})
 
 	// Password Reset
 	acr.Get("/reset", func(w http.ResponseWriter, r *http.Request) {})
 	acr.Post("/reset", func(w http.ResponseWriter, r *http.Request) {})
 
-	// Account activation routes
-	acr.Get("/activate", func(w http.ResponseWriter, r *http.Request) {})
-	acr.Post("/activate", func(w http.ResponseWriter, r *http.Request) {})
+	acr.Group(func(r chi.Router) {
+		r.Use(mid.GuestMiddleware)
+		// Login and Register routes
+		r.Get("/register", handlers.GetRegisterPage)
+		r.Post("/register", handlers.PostRegisterPage)
+		r.Get("/login", handlers.GetLoginPage)
+		r.Post("/login", handlers.PostLoginPage)
+	})
+
+	acr.Group(func(r chi.Router) {
+		r.Use(mid.AuthedMiddleware)
+		r.Post("/logout", handlers.Logout)
+	})
 
 	return acr
 }

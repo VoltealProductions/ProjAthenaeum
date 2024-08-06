@@ -2,7 +2,7 @@ package partials
 
 import "github.com/VoltealProductions/Athenaeum/internal/views/partials/components"
 
-templ LeftSidebar() {
+templ LeftSidebar(li bool) {
 	<div class="bg-black/45 p-1">
 		<h1 class="text-center text-white pb-1 text-base font-bold"></h1>
 	</div>
@@ -17,17 +17,11 @@ templ LeftSidebar() {
 	<div>
 		@components.NavComponent()
 	</div>
-	<div class="bg-black/45 p-1">
-		<h1 class="text-center text-white pb-1 text-base font-bold">
-			The User Section
-		</h1>
-	</div>
-	<div>
-		// If SESSION EXISTS && MATCHES COOKIE
-		// Render: @components.UserMenu()
-		// Render : @components.GuestMenu()
+	if li {
+		@components.LoggedInUserMenu("Volteal")
+	} else {
 		@components.UserMenu()
-	</div>
+	}
 }
 
 templ RightSidebar() {

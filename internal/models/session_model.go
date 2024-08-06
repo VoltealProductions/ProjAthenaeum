@@ -1,6 +1,7 @@
 package models
 
 import (
+	"net/http"
 	"time"
 
 	"gorm.io/gorm"
@@ -44,4 +45,41 @@ func DeleteSession(tkn string) error {
 		return result.Error
 	}
 	return nil
+}
+
+func IsLoggedIn(r *http.Request) bool {
+	c, err := r.Cookie("session_token")
+	if err != nil {
+		if err == http.ErrNoCookie {
+			return false
+		}
+		return false
+	}
+
+	tkn := c.Value
+	userSession, exists := LoadSession(tkn)
+	if !exists {
+		return false
+	}
+
+	if userSession.IsExpired() {
+		return false
+	}
+
+	return true
+}
+
+func IsNotLoggedIn(w http.ResponseWriter, r *http.Request) bool {
+	c, err := r.Cookie("session_token")
+	if err == http.ErrNoCookie {
+		return false
+	}
+
+	tkn := c.Value
+	_, exists := LoadSession(tkn)
+	if exists {
+		return true
+	}
+
+	return false
 }

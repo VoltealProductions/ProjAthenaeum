@@ -1,4 +1,9 @@
 package characters
 
-templ CharactersIndex() {
+import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
+
+templ CharactersIndex(li bool) {
+	@layout.Base(li) {
+		<h1>Hello World!~</h1>
+	}
 }

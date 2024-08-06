@@ -2,8 +2,8 @@ package httperrors
 
 import "github.com/VoltealProductions/Athenaeum/internal/views/layout"
 
-templ NotFoundError() {
-	@layout.Base() {
+templ NotFoundError(li bool) {
+	@layout.Base(li) {
 		<h1 class="text-3xl text-center font-bold py-1 mb-3 text-white bg-primary">Error404: Page Not Found</h1>
 	}
 }

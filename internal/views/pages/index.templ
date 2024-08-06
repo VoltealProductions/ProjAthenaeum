@@ -5,8 +5,8 @@ import (
 	"github.com/VoltealProductions/Athenaeum/internal/views/partials"
 )
 
-templ Index(t, m string) {
-	@layout.Base() {
+templ Index(t, m string, li bool) {
+	@layout.Base(li) {
 		@partials.RenderFlash(t, m)
 		<h1 class="text-3xl text-center font-bold py-1 mb-2 text-white bg-primary">
 			Most Recent News Articles

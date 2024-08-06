@@ -2,7 +2,7 @@ package layout
 
 import "github.com/VoltealProductions/Athenaeum/internal/views/partials"
 
-templ Base() {
+templ Base(li bool) {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -13,7 +13,7 @@ templ Base() {
 			<script src="/public/js/htmx.min.js"></script>
 			<link href="/public/css/default/style.css" rel="stylesheet"/>
 		</head>
-		<body class="bg-site-archives-img bg-no-repeat bg-fixed bg-cover backdrop-brightness-50">
+		<body id="body" class="bg-site-archives-img bg-no-repeat bg-fixed bg-cover backdrop-brightness-50">
 			<!-- Start of the Main Content Wrapper -->
 			<div class="container mx-auto grid grid-cols-7 shadow-xl">
 				<!-- Start of the Page Header -->
@@ -24,7 +24,7 @@ templ Base() {
 				<!--Start of the Page Body -->
 				<!-- Start of the Left Sidebar -->
 				<div class="bg-secondary col-span-full order-2 md:col-span-full md:order-2 lg:order-1 lg:col-span-1">
-					@partials.LeftSidebar()
+					@partials.LeftSidebar(li)
 				</div>
 				<!-- End of the Left Sidebar-->
 				<!-- Start of the Main Content -->

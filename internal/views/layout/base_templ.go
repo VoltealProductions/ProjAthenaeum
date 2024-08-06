@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/VoltealProductions/Athenaeum/internal/views/partials"
 
-func Base() templ.Component {
+func Base(li bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
@@ -28,7 +28,7 @@ func Base() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>The Azure Archives</title><script src=\"https://kit.fontawesome.com/741a402806.js\" crossorigin=\"anonymous\"></script><script src=\"/public/js/htmx.min.js\"></script><link href=\"/public/css/default/style.css\" rel=\"stylesheet\"></head><body class=\"bg-site-archives-img bg-no-repeat bg-fixed bg-cover backdrop-brightness-50\"><!-- Start of the Main Content Wrapper --><div class=\"container mx-auto grid grid-cols-7 shadow-xl\"><!-- Start of the Page Header --><nav class=\"order-first col-span-full bg-center bg-no-repeat\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>The Azure Archives</title><script src=\"https://kit.fontawesome.com/741a402806.js\" crossorigin=\"anonymous\"></script><script src=\"/public/js/htmx.min.js\"></script><link href=\"/public/css/default/style.css\" rel=\"stylesheet\"></head><body id=\"body\" class=\"bg-site-archives-img bg-no-repeat bg-fixed bg-cover backdrop-brightness-50\"><!-- Start of the Main Content Wrapper --><div class=\"container mx-auto grid grid-cols-7 shadow-xl\"><!-- Start of the Page Header --><nav class=\"order-first col-span-full bg-center bg-no-repeat\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -40,7 +40,7 @@ func Base() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = partials.LeftSidebar().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = partials.LeftSidebar(li).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
